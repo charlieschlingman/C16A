@@ -9,8 +9,8 @@ X,DA,D,D,D,D,W,W,W,W,W,W^,W,W,W,W,W,W,W,W^,W,W,W,W
 X,W,W,W,W^,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,X
 W,W,W,W,W,W,X,X,W,W,B,B,B,W,W,X,X,W,W,P,P,P,P,X
 X,R,R,R,W,W,X,X,W,W,B,B,B,W,W,X,X,W,W,P,P,P,P,P
-R,R,R,R,W,W,X,X,W,W,B,B,B,W,W,X,X,W,W,P,P,P#,P,P
-R#,R,R,R,W,W,X,X,W,W>,B,B,B,W<,W,X,X,W,W>,P,P,P,P,P
+R,R,R,R,W,W,X,X,W,W,B,B#,B,W,W,X,X,W,W,P,P,P#,P,P
+R#,R,R,R,W,W,X,X,W,W>,B*,B,B,W<,W,X,X,W,W>,P,P,P,P,P
 R,R*,R,R,W<,W,X,X,W,W,B,B,B,W,W,X,X,W,W,P,P,P*,P,P
 R,R,R,R,W,W,X,X,W,W,B,B,B,W,W,X,X,W,W,P,P,P,P,P
 R,R,R,R,W,W,X,X,W,W,B,B,B,W,W,X,X,W,W,P,P,P,P,P
