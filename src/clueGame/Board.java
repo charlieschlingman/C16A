@@ -214,22 +214,6 @@ public class Board {
 	                continue;
 	            }
 	            
-	            if (cell.getSecretPassage() != 0) {
-	                char destInitial = cell.getSecretPassage();
-	                Room destRoom = roomMap.get(destInitial);
-	                if (destRoom != null && destRoom.getCenterCell() != null) {
-	                    cell.addAdjacency(destRoom.getCenterCell());
-	                }
-	            }
-	            
-	            if (cell.isDoorway()) {
-	                Room room = getRoom(cell);
-	                if (room != null && room.getCenterCell() != null) {
-	                    cell.addAdjacency(room.getCenterCell());
-	                    room.getCenterCell().addAdjacency(cell);
-	                }
-	            }
-	            
 	            if (cell.isRoomCenter()) {
 	            	Room room = getRoom(cell);
 	            	if (room.getSecretPassage() != 0) {
@@ -271,7 +255,7 @@ public class Board {
 	        adj.add(other);
 	    }
 	    // Handle doors
-	    else if (other.isDoorway() && other.getDoorDirection() == neededDoorDir) {
+	    else if (other.isDoorway()) {
 	        adj.add(other);
 	    }
 	    // Handle doorway cells themselves
@@ -364,7 +348,7 @@ public class Board {
 			if (adjCell.getOccupied())
 				continue;
 
-			visited.add(adjCell);
+			//visited.add(adjCell);
 
 			if (adjCell.room()) {
 				targets.add(adjCell);

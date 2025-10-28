@@ -62,6 +62,7 @@ public class BoardCell {
 	public void setRoom(boolean room) {
 		this.room = room;
 	}
+	
 
 	// Get whether the cell is part of a room or not
 	public boolean room() {

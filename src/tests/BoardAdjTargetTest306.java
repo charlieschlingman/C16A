@@ -74,6 +74,7 @@ public class BoardAdjTargetTest306 {
 		assertTrue(testList.contains(board.getCell(19, 6)));
 		assertTrue(testList.contains(board.getCell(20, 7)));
 		assertTrue(testList.contains(board.getCell(20, 11)));
+		
 	}
 	
 	// Test a variety of walkway scenarios
@@ -293,3 +294,4 @@ public class BoardAdjTargetTest306 {
 
 	}
 }
+
