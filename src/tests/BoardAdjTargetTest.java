@@ -59,7 +59,7 @@ public class BoardAdjTargetTest {
 		assertEquals(testList.size(), 4);
 		assertTrue(testList.contains(board.getCell(4, 17)));
 		assertTrue(testList.contains(board.getCell(6, 17)));
-		assertTrue(testList.contains(board.getCell(4, 16)));
+		assertTrue(testList.contains(board.getCell(5, 16)));
 		assertTrue(testList.contains(board.getCell(3, 20)));
 		
 		testList = board.getAdjList(20, 6);
@@ -120,6 +120,13 @@ public class BoardAdjTargetTest {
 		assertTrue(testList.contains(board.getCell(7, 7)));
 		assertTrue(testList.contains(board.getCell(8, 8)));
 		assertTrue(testList.contains(board.getCell(7, 9)));
+		
+		testList = board.getAdjList(20, 7);
+		assertEquals(testList.size(), 3);
+		assertTrue(testList.contains(board.getCell(20, 6)));
+		assertTrue(testList.contains(board.getCell(19, 7)));
+		assertTrue(testList.contains(board.getCell(21, 7)));
+		
 		
 	}
 	

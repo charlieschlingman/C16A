@@ -3,8 +3,8 @@ package clueGame;
 import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import javax.swing.JFrame;
-import experiment.TestBoardCell;
+
+
 
 public class Board {
 	private BoardCell[][] grid;
@@ -15,6 +15,7 @@ public class Board {
 	private Map<Character, Room> roomMap;
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
+	private Set<BoardCell> doors;
 	private int roomCount;
 	private int doorCount;
 	
@@ -110,6 +111,7 @@ public class Board {
 		roomCount = 0;
 		doorCount = 0;
 		Set<Character> uniqueRooms = new HashSet<>();
+		doors = new HashSet<>();
 
 		for (int r = 0; r < numRows; r++) {
 			for (int c = 0; c < numColumns; c++) {
@@ -150,15 +152,19 @@ public class Board {
 			switch (symbol) {
 			case '^':
 				cell.setDoorDirection(DoorDirection.UP);
+				doors.add(cell);
 				break;
 			case 'v':
 				cell.setDoorDirection(DoorDirection.DOWN);
+				doors.add(cell);
 				break;
 			case '<':
 				cell.setDoorDirection(DoorDirection.LEFT);
+				doors.add(cell);
 				break;
 			case '>':
 				cell.setDoorDirection(DoorDirection.RIGHT);
+				doors.add(cell);
 				break;
 			default:
 				break;
@@ -187,6 +193,9 @@ public class Board {
 		    char secondChar = code.charAt(1);
 		    if (Character.isLetter(secondChar)) {
 		        cell.setSecretPassage(secondChar);
+		        Room room = roomMap.get(initial);
+		        room.setSecretPassage(secondChar);
+		        
 		    }
 		}
 		
@@ -199,8 +208,8 @@ public class Board {
 	            BoardCell cell = grid[row][col];
 	            Set<BoardCell> adj = new HashSet<>();
 
-	            // Skip non-walkway cells unless they are doorways
-	            if (!isWalkway(cell) && !cell.isDoorway()) {
+	            // Skip non-walkway cells unless they are doorways or centers
+	            if (!isWalkway(cell) && !cell.isDoorway() && !cell.isRoomCenter()) {
 	                cell.getAdjList().clear();
 	                continue;
 	            }
@@ -220,12 +229,27 @@ public class Board {
 	                    room.getCenterCell().addAdjacency(cell);
 	                }
 	            }
+	            
+	            if (cell.isRoomCenter()) {
+	            	Room room = getRoom(cell);
+	            	if (room.getSecretPassage() != 0) {
+	            		Room destRoom = roomMap.get(room.getSecretPassage());
+	            		BoardCell destRoomCell = destRoom.getCenterCell();
+	            		adj.add(destRoomCell);
+	            	}
+	            	
+	            	Set<BoardCell> addDoors = getRoomDoors(cell.getInitial());
+	            	for (BoardCell cells : addDoors) {
+	            		adj.add(cells);
+	            	}
+	            	
+	            }
 
 	            // Check each of the four directions
-	            addAdjacencyIfValid(adj, row - 1, col, DoorDirection.DOWN, cell);  // Up
-	            addAdjacencyIfValid(adj, row + 1, col, DoorDirection.UP, cell);    // Down
-	            addAdjacencyIfValid(adj, row, col - 1, DoorDirection.RIGHT, cell); // Left
-	            addAdjacencyIfValid(adj, row, col + 1, DoorDirection.LEFT, cell);  // Right
+	            addAdjacencyIfValid(adj, row - 1, col, DoorDirection.UP, cell);  // Up
+	            addAdjacencyIfValid(adj, row + 1, col, DoorDirection.DOWN, cell);    // Down
+	            addAdjacencyIfValid(adj, row, col - 1, DoorDirection.LEFT, cell); // Left
+	            addAdjacencyIfValid(adj, row, col + 1, DoorDirection.RIGHT, cell);  // Right
 
 	            // Store it
 	            cell.getAdjList().clear();
@@ -252,8 +276,39 @@ public class Board {
 	    }
 	    // Handle doorway cells themselves
 	    else if (origin.isDoorway() && origin.getDoorDirection() == neededDoorDir) {
-	        adj.add(other);
+	    	BoardCell thisRoom = other;
+	    	thisRoom.getInitial();
+	    	Room doorRoom = roomMap.get(thisRoom.getInitial());
+	    	BoardCell centerCell = doorRoom.getCenterCell();
+	    	adj.add(centerCell);
 	    }
+	}
+	
+	private Set<BoardCell> getRoomDoors(char roomInitial) {
+		Set<BoardCell> roomDoors = new HashSet<>();
+		for (BoardCell door : doors) {
+			BoardCell roomCell = grid[door.getRow()][door.getColumn()];
+			switch(door.getDoorDirection()) {
+			case UP:
+				roomCell = grid[door.getRow() - 1][door.getColumn()];
+				break;
+			case DOWN:
+				roomCell = grid[door.getRow() + 1][door.getColumn()];
+				break;
+			case LEFT:
+				roomCell = grid[door.getRow()][door.getColumn() - 1];
+				break;
+			case RIGHT:
+				roomCell = grid[door.getRow()][door.getColumn() + 1];
+				break;
+			default:
+				break;
+			}
+			if (roomInitial == roomCell.getInitial()) {
+				roomDoors.add(door);
+			}
+		}
+		return roomDoors;
 	}
 
 	// Getters for numRows and numCols
@@ -344,4 +399,10 @@ public class Board {
 	public int getDoorCount() {
 		return doorCount;
 	}
+	
+	public Set<BoardCell> getDoors() {
+		return doors;
+	}
+	
+	
 }

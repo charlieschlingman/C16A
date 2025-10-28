@@ -4,6 +4,7 @@ public class Room {
     private String name;
     private BoardCell centerCell;
     private BoardCell labelCell;
+    private char SecretPassage;
 
     // Default constructor
     public Room() {
@@ -45,4 +46,14 @@ public class Room {
     public void setLabelCell(BoardCell labelCell) {
         this.labelCell = labelCell;
     }
+
+	public char getSecretPassage() {
+		return SecretPassage;
+	}
+
+	public void setSecretPassage(char secretPassage) {
+		this.SecretPassage = secretPassage;
+	}
+    
+    
 }

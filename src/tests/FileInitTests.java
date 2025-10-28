@@ -5,7 +5,6 @@ import clueGame.BoardCell;
 import clueGame.DoorDirection;
 import clueGame.Room;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -74,7 +73,7 @@ public class FileInitTests {
 		assertEquals(cell.getDoorDirection(), DoorDirection.DOWN);
 		cell = board.getCell(18, 8);
 		assertFalse(cell.isDoorway());
-		assertEquals(board.getDoorCount(), 14);
+		assertEquals(board.getDoors().size(), 14);
 	}
 	
 	// Tests to make sure all rooms have the right center
@@ -135,6 +134,7 @@ public class FileInitTests {
 		assertTrue(cell.isLabel());
 		assertFalse(cell.isRoomCenter());
 		assertFalse(cell.isDoorway());
+		assertEquals(room.getSecretPassage(), 'D');
 	}
 	
 	
