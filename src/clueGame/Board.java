@@ -195,12 +195,9 @@ public class Board {
 				cell.setSecretPassage(secondChar);
 				Room room = roomMap.get(initial);
 				room.setSecretPassage(secondChar);
-
 			}
 		}
-
 	}
-
 
 	private void calcAdjacencies() {
 		for (int row = 0; row < numRows; row++) {
@@ -213,7 +210,6 @@ public class Board {
 					cell.getAdjList().clear();
 					continue;
 				}
-
 				if (cell.isRoomCenter()) {
 					Room room = getRoom(cell);
 					if (room.getSecretPassage() != 0) {
@@ -221,12 +217,10 @@ public class Board {
 						BoardCell destRoomCell = destRoom.getCenterCell();
 						adj.add(destRoomCell);
 					}
-
 					Set<BoardCell> addDoors = getRoomDoors(cell.getInitial());
 					for (BoardCell cells : addDoors) {
 						adj.add(cells);
 					}
-
 				}
 
 				// Check each of the four directions
@@ -250,6 +244,7 @@ public class Board {
 		if (row < 0 || row >= numRows || col < 0 || col >= numColumns) return;
 
 		BoardCell other = grid[row][col];
+		
 		// Handle walkways
 		if (isWalkway(other)) {
 			adj.add(other);
@@ -344,13 +339,13 @@ public class Board {
 			if (visited.contains(adjCell))
 				continue;
 
-			// Skip occupied cells
+			// Skip occupied doorways if in room
 			if (adjCell.getOccupied() && thisCell.isRoomCenter())
 				continue;
 
 			visited.add(adjCell);
 
-			// If it's a room center, we can always enter it (and stop there)
+			// If it's a room center, we can always enter it and stop there
 			if (adjCell.isRoomCenter()) {
 				targets.add(adjCell);
 			}
@@ -361,7 +356,7 @@ public class Board {
 				if (center != null) {
 					targets.add(center);
 				}
-				// Also you can step onto the doorway if it’s in range
+				// You can step onto the doorway if it’s in range
 				if (numSteps == 1) {
 					targets.add(adjCell);
 				} 
@@ -410,6 +405,4 @@ public class Board {
 	public Set<BoardCell> getDoors() {
 		return doors;
 	}
-
-
 }
