@@ -150,7 +150,7 @@ public class BoardAdjTargetTest {
 		assertTrue(targets.contains(board.getCell(12, 18)));
 
 		// test a roll of 3
-		board.calcTargets(board.getCell(12, 20), 3);
+		board.calcTargets(board.getCell(13, 21), 3);
 		targets= board.getTargets();
 		assertEquals(4, targets.size());
 		assertTrue(targets.contains(board.getCell(10, 18)));
@@ -159,13 +159,13 @@ public class BoardAdjTargetTest {
 		assertTrue(targets.contains(board.getCell(13, 17)));	
 
 		// test a roll of 4
-		board.calcTargets(board.getCell(12, 20), 4);
+		board.calcTargets(board.getCell(13, 21), 4);
 		targets= board.getTargets();
-		assertEquals(8, targets.size());
+		assertEquals(7, targets.size());
 		assertTrue(targets.contains(board.getCell(9, 18)));
 		assertTrue(targets.contains(board.getCell(15, 18)));	
-		assertTrue(targets.contains(board.getCell(10, 18)));
-		assertTrue(targets.contains(board.getCell(14, 18)));	
+		assertTrue(targets.contains(board.getCell(10, 17)));
+		assertTrue(targets.contains(board.getCell(14, 17)));	
 	}
 
 	@Test
@@ -215,7 +215,7 @@ public class BoardAdjTargetTest {
 		// test a roll of 3
 		board.calcTargets(board.getCell(7, 19), 3);
 		targets= board.getTargets();
-		assertEquals(8, targets.size());
+		assertEquals(10, targets.size());
 		assertTrue(targets.contains(board.getCell(3, 20)));
 		assertTrue(targets.contains(board.getCell(8, 21)));
 		assertTrue(targets.contains(board.getCell(9, 18)));	
@@ -225,7 +225,7 @@ public class BoardAdjTargetTest {
 		// test a roll of 4
 		board.calcTargets(board.getCell(7, 19), 4);
 		targets= board.getTargets();
-		assertEquals(12, targets.size());
+		assertEquals(13, targets.size());
 		assertTrue(targets.contains(board.getCell(3, 20)));
 		assertTrue(targets.contains(board.getCell(7, 21)));
 		assertTrue(targets.contains(board.getCell(10, 18)));	
@@ -245,15 +245,15 @@ public class BoardAdjTargetTest {
 		// test a roll of 3
 		board.calcTargets(board.getCell(8, 2), 3);
 		targets= board.getTargets();
-		assertEquals(3, targets.size());
+		assertEquals(7, targets.size());
 		assertTrue(targets.contains(board.getCell(8, 1)));
 		assertTrue(targets.contains(board.getCell(9, 2)));
-		assertTrue(targets.contains(board.getCell(11, 5)));	
+		assertTrue(targets.contains(board.getCell(8, 5)));	
 
 		// test a roll of 4
 		board.calcTargets(board.getCell(8, 2), 4);
 		targets= board.getTargets();
-		assertEquals(6, targets.size());
+		assertEquals(7, targets.size());
 		assertTrue(targets.contains(board.getCell(3, 2)));
 		assertTrue(targets.contains(board.getCell(9, 1)));
 		assertTrue(targets.contains(board.getCell(9, 5)));	
@@ -289,7 +289,7 @@ public class BoardAdjTargetTest {
 		// test a roll of 4 blocked 2 down
 		board.getCell(23, 16).setOccupied(true);
 		board.calcTargets(board.getCell(25, 16), 4);
-		board.getCell(23, 7).setOccupied(false);
+		board.getCell(23, 16).setOccupied(false);
 		Set<BoardCell> targets = board.getTargets();
 		assertEquals(1, targets.size());
 		assertTrue(targets.contains(board.getCell(22, 17)));
@@ -300,8 +300,8 @@ public class BoardAdjTargetTest {
 		board.getCell(3, 20).setOccupied(true);
 		board.getCell(7, 20).setOccupied(true);
 		board.calcTargets(board.getCell(7, 19), 1);
-		board.getCell(12, 20).setOccupied(false);
-		board.getCell(8, 18).setOccupied(false);
+		board.getCell(3, 20).setOccupied(false);
+		board.getCell(7, 20).setOccupied(false);
 		targets= board.getTargets();
 		assertEquals(3, targets.size());
 		assertTrue(targets.contains(board.getCell(7, 18)));	
@@ -313,10 +313,10 @@ public class BoardAdjTargetTest {
 		board.calcTargets(board.getCell(12, 11), 3);
 		board.getCell(12, 13).setOccupied(false);
 		targets= board.getTargets();
-		assertEquals(7, targets.size());
-		assertTrue(targets.contains(board.getCell(9, 9)));
-		assertTrue(targets.contains(board.getCell(13, 9)));	
-		assertTrue(targets.contains(board.getCell(14, 8)));
+		assertEquals(4, targets.size());
+		assertTrue(targets.contains(board.getCell(10, 9)));
+		assertTrue(targets.contains(board.getCell(13, 8)));	
+		assertTrue(targets.contains(board.getCell(14, 9)));
 
 	}
 	

@@ -111,7 +111,11 @@ public class BoardCell {
 		return doorDirection != DoorDirection.NONE;
 	}
 
-
+	// Override toString
+    @Override
+    public String toString() {
+        return "[" + row + ", " + column + "]";
+    }
 	
 
 }
