@@ -83,8 +83,11 @@ public class Board {
 	}
 
 	public void loadLayoutConfig() throws BadConfigFormatException {
+		
+		// Save all the lines from the file to an arrayList
 		List<String[]> lines = new ArrayList<>();
 
+		// Add all the lines from the file to the list
 		try (Scanner in = new Scanner(new File(layoutConfigFile))) {
 			while (in.hasNextLine()) {
 				String line = in.nextLine().trim();
@@ -97,6 +100,7 @@ public class Board {
 			return;
 		}
 
+		// Set the parameters of the board based on the inputed lines
 		numRows = lines.size();
 		numColumns = lines.get(0).length;
 
@@ -114,12 +118,15 @@ public class Board {
 	// Sets up the full board, assigning proper cells the proper characteristics
 	private void setUpBoard(List<String[]> lines) throws BadConfigFormatException {
 
+		// Set up the grid, as well as room and door counts, unique rooms, and the door locations
 		grid = new BoardCell[numRows][numColumns];
 		roomCount = 0;
 		doorCount = 0;
 		Set<Character> uniqueRooms = new HashSet<>();
 		doors = new HashSet<>();
 
+		
+		// Loop through the amount of rows and columns, checking to see if a cell has a certain characteristic
 		for (int r = 0; r < numRows; r++) {
 			for (int c = 0; c < numColumns; c++) {
 				String cellCode = lines.get(r)[c].trim();
@@ -132,6 +139,7 @@ public class Board {
 					throw new BadConfigFormatException("Invalid room initial: " + initial);
 				}
 
+				// Set the characteristics of the cell based on cell character setup/letters
 				BoardCell cell = new BoardCell(r, c);
 				cell.setInitial(initial);
 				cell.setRoom(initial != 'W' && initial != 'X');
