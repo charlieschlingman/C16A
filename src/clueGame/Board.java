@@ -314,8 +314,8 @@ public class Board {
 	}
 
 	// Gets adjacency list
-	public Set<BoardCell> getAdjList(int x, int y) {
-		return grid[x][y].getAdjList();
+	public Set<BoardCell> getAdjList(int row, int col) {
+		return grid[row][col].getAdjList();
 	}
 
 
