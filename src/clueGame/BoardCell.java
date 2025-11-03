@@ -37,16 +37,21 @@ public class BoardCell {
 	public char getSecretPassage() {
 		return this.secretPassage;
 	}
-
-	// Set the doorDirection
-	public void setDoorDirection(DoorDirection dir) {
-		doorDirection = dir;
+	
+	// Set secret passage
+	public void setSecretPassage(char ch) {
+		this.secretPassage = ch;
 	}
 
 	// Get the doorDirection
 	public DoorDirection getDoorDirection() {
 		return doorDirection;
 	}
+	
+	// Set the doorDirection
+		public void setDoorDirection(DoorDirection dir) {
+			doorDirection = dir;
+		}
 
 	// Add a cell to the adjacency list
 	public void addAdjacency(BoardCell cell) {
@@ -79,11 +84,6 @@ public class BoardCell {
 		return occupied;
 	}
 
-	// Set secret passage
-	public void setSecretPassage(char ch) {
-		this.secretPassage = ch;
-	}
-
 	public int getRow() {
 		return row;
 	}
@@ -96,6 +96,7 @@ public class BoardCell {
 	public void setRoomCenter(boolean val) { 
 		this.roomCenter = val;
 	}
+	
 	public boolean isRoomCenter() {
 		return roomCenter;
 	}
@@ -103,6 +104,7 @@ public class BoardCell {
 	public void setLabel(boolean val) {
 		this.label = val;
 	}
+	
 	public boolean isLabel() { 
 		return label; 
 	}
