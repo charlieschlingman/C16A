@@ -106,6 +106,13 @@ public class Board {
 				throw new BadConfigFormatException("Inconsistent column count in layout file.");
 			}
 		}
+		
+		setUpBoard(lines);
+	}
+	
+	
+	// Sets up the full board, assigning proper cells the proper characteristics
+	private void setUpBoard(List<String[]> lines) throws BadConfigFormatException {
 
 		grid = new BoardCell[numRows][numColumns];
 		roomCount = 0;
