@@ -47,6 +47,7 @@ public class Room {
         this.labelCell = labelCell;
     }
 
+    // Getter and Setter for secretPassage
 	public char getSecretPassage() {
 		return SecretPassage;
 	}
@@ -54,6 +55,4 @@ public class Room {
 	public void setSecretPassage(char secretPassage) {
 		this.SecretPassage = secretPassage;
 	}
-    
-    
 }
