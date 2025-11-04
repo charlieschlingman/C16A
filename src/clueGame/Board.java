@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 
-
 public class Board {
 	private BoardCell[][] grid;
 	private int numRows;
@@ -221,7 +220,7 @@ public class Board {
 				Set<BoardCell> adj = new HashSet<>();
 
 				// Skip non-walkway cells unless they are doorways or centers
-				if (!isWalkway(cell) && !cell.isDoorway() && !cell.isRoomCenter()) {
+				if (!cell.isWalkway() && !cell.isDoorway() && !cell.isRoomCenter()) {
 					cell.getAdjList().clear();
 					continue;
 				}
@@ -251,9 +250,9 @@ public class Board {
 		}
 	}
 
-	private boolean isWalkway(BoardCell cell) {
-		return cell.getInitial() == 'W';
-	}
+	//private boolean isWalkway(BoardCell cell) {
+	//	return cell.getInitial() == 'W';
+	//}
 
 	private void addAdjacencyIfValid(Set<BoardCell> adj, int row, int col, DoorDirection neededDoorDir, BoardCell origin) {
 		if (row < 0 || row >= numRows || col < 0 || col >= numColumns) return;
@@ -261,7 +260,7 @@ public class Board {
 		BoardCell other = grid[row][col];
 		
 		// Handle walkways
-		if (isWalkway(other)) {
+		if (other.isWalkway()) {
 			adj.add(other);
 		}
 		// Handle doors

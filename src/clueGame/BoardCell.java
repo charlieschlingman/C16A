@@ -112,6 +112,11 @@ public class BoardCell {
 	public boolean isDoorway() {
 		return doorDirection != DoorDirection.NONE;
 	}
+	
+	// Return true if cell is Walkway
+	public boolean isWalkway() {
+		return initial == 'W';
+	}
 
 	// Override toString
     @Override
