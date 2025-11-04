@@ -2,9 +2,9 @@ package clueGame;
 
 public class Room {
     private String name;
+    private char SecretPassage;
     private BoardCell centerCell;
     private BoardCell labelCell;
-    private char SecretPassage;
 
     // Default constructor
     public Room() {
