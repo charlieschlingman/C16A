@@ -250,10 +250,6 @@ public class Board {
 		}
 	}
 
-	//private boolean isWalkway(BoardCell cell) {
-	//	return cell.getInitial() == 'W';
-	//}
-
 	private void addAdjacencyIfValid(Set<BoardCell> adj, int row, int col, DoorDirection neededDoorDir, BoardCell origin) {
 		if (row < 0 || row >= numRows || col < 0 || col >= numColumns) return;
 
