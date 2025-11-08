@@ -3,6 +3,8 @@ package clueGame;
 import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.awt.Color;
+
 
 
 public class Board {
@@ -15,6 +17,14 @@ public class Board {
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
 	private Set<BoardCell> doors;
+	private Set<Player> players;
+	private Set<String> weapons;
+	private Set<Card> allCards;
+	private Set<Card> weaponCards;
+	private Set<Card> roomCards;
+	private Set<Card> personCards;
+	private Set<Card> theAnswer;
+	private List<Card> allCardsList;
 	private int roomCount;
 	private int doorCount;
 
@@ -54,6 +64,14 @@ public class Board {
 	// Load configuration files
 	public void loadSetupConfig() throws BadConfigFormatException {
 		roomMap = new HashMap<>();
+		players = new HashSet<>();
+		weapons = new HashSet<>();
+		allCards = new HashSet<>();
+		weaponCards = new HashSet<>();
+		roomCards = new HashSet<>();
+		personCards = new HashSet<>();
+		Card thisCard = new Card(null, null);
+		
 
 		try (Scanner in = new Scanner(new File(setupConfigFile))) {
 			while (in.hasNextLine()) {
@@ -61,19 +79,87 @@ public class Board {
 				if (line.isEmpty() || line.startsWith("//")) continue;
 
 				String[] parts = line.split(",");
-				if (parts.length != 3) {
-					throw new BadConfigFormatException("Invalid setup line: " + line);
-				}
 
 				String type = parts[0].trim();
-				String name = parts[1].trim();
-				char initial = parts[2].trim().charAt(0);
 
-				if (!type.equals("Room") && !type.equals("Space")) {
+				if (!type.equals("Room") && !type.equals("Space") && !type.equals("Player") && !type.equals("Weapon")) {
 					throw new BadConfigFormatException("Unknown room type: " + type);
 				}
+				
+				
+				if (type.equals("Room") || type.equals("Space")) {
+					if (parts.length != 3) {
+						throw new BadConfigFormatException("Invalid setup line: " + line);
+					}
+					String name = parts[1].trim();
+					char initial = parts[2].trim().charAt(0);
+					roomMap.put(initial, new Room(name, null, null));
+					if (type.equals("Room")) {
+						thisCard = new Card(CardType.ROOM, name);
+						allCards.add(thisCard);
+						roomCards.add(thisCard);
+					}
+				}
+				
+				if (type.equals("Player")) {
+					if (parts.length != 6) {
+						throw new BadConfigFormatException("Invalid setup line: " + line);
+					}
+					String colorString = parts[1].trim();
+					Color playerColor = new Color(0);
+					switch (colorString) {
+					case "Red":
+						playerColor = Color.red;
+						break;
+					case "Blue":
+						playerColor = Color.blue;
+						break;
+					case "Orange":
+						playerColor = Color.orange;
+						break;
+					case "Green":
+						playerColor = Color.green;
+						break;
+					case "Yellow":
+						playerColor = Color.yellow;
+						break;
+					case "White":
+						playerColor = Color.white;
+						break;
+					default:
+						throw new BadConfigFormatException("Unknown color: " + colorString);
+					}
+					
+					String playerType = parts[2].trim();
+					String name = parts[3].trim();
+					
+					String playerRow = parts[4].trim();
+					String playerCol = parts[5].trim();
+					int playerRowInt = Integer.parseInt(playerRow);
+					int playerColInt = Integer.parseInt(playerCol);
 
-				roomMap.put(initial, new Room(name, null, null));
+					
+					Player player = new Player(name, playerColor, playerType, playerRowInt, playerColInt);
+					players.add(player);
+					thisCard = new Card(CardType.PERSON, name);
+					allCards.add(thisCard);
+					personCards.add(thisCard);
+					
+				}
+				
+				
+				if (type.equals("Weapon")) {
+					if (parts.length != 2) {
+						throw new BadConfigFormatException("Invalid setup line: " + line);
+					}
+					String weapon = parts[1].trim();
+					weapons.add(weapon);
+					thisCard = new Card(CardType.WEAPON, weapon);
+					allCards.add(thisCard);
+					weaponCards.add(thisCard);
+					
+				}
+				
 			}
 		} 
 		catch (FileNotFoundException e) {
@@ -111,6 +197,7 @@ public class Board {
 		}
 		
 		setUpBoard(lines);
+		deal();
 	}
 	
 	
@@ -391,6 +478,49 @@ public class Board {
 			visited.remove(adjCell);
 		}
 	}
+	
+	public void deal() {
+		theAnswer = new HashSet<>();
+		Random rand = new Random();
+		int answerRoomNum = rand.nextInt(roomCards.size());
+		int answerWeaponNum = rand.nextInt(weaponCards.size());
+		int answerPersonNum = rand.nextInt(personCards.size());
+		
+		List<Card> roomCardList = new ArrayList<>(roomCards);
+		List<Card> weaponCardList = new ArrayList<>(weaponCards);
+		List<Card> personCardList = new ArrayList<>(personCards);
+		
+		Card answerRoom = roomCardList.get(answerRoomNum);
+		Card answerWeapon = weaponCardList.get(answerWeaponNum);
+		Card answerPerson = personCardList.get(answerPersonNum);
+		
+		Solution answer = new Solution(answerRoom, answerWeapon, answerPerson);
+		
+		theAnswer = answer.theAnswer();
+		
+		allCards.remove(answerRoom);
+		allCards.remove(answerPerson);
+		allCards.remove(answerWeapon);
+		
+		int playerNum = 0;
+		List<Player> playersList = new ArrayList<>(players);
+		allCardsList = new ArrayList<>(allCards);
+		
+		
+		for (Card card: allCards) {
+			int thisCardNum = rand.nextInt(allCardsList.size());			
+			Card givingCard = allCardsList.get(thisCardNum);
+			Player recievingPlayer = playersList.get(playerNum);
+			recievingPlayer.addCard(givingCard);
+			playerNum++;
+			if (playerNum >= 6) { playerNum = 0; }
+			allCardsList.remove(givingCard);
+			
+			
+			
+		}
+		
+	}
 
 	// Getter for targets (returns empty set if not initialized)
 	public Set<BoardCell> getTargets() {
@@ -415,4 +545,62 @@ public class Board {
 	public Set<BoardCell> getDoors() {
 		return doors;
 	}
+	
+	public Set<Player> getPlayers() {
+		return players;
+	}
+	
+	public Player getThisPlayer(String name) {
+		Player thisPlayer = new Player("Test", null, null, null, null);
+		for (Player player: players) {
+			if (player.getName().equals(name)) {
+				thisPlayer = player;
+			}
+		}
+		return thisPlayer;
+	}
+	
+	public Player getThisPlayer(Color color) {
+		Player thisPlayer = new Player("Test", null, null, null, null);
+		for (Player player: players) {
+			if (player.getColor().equals(color)) {
+				thisPlayer = player;
+			}
+		}
+		return thisPlayer;
+	}
+	public Set<String> getWeapons() {
+		return weapons;
+	}
+	
+	public String getWeapon(String inputWeapon) {
+		String thisWeapon = new String();
+		for (String weapon: weapons) {
+			if (weapon.equals(inputWeapon)) {
+				thisWeapon = weapon;
+			}
+		}
+		return thisWeapon;
+	}
+	public Set<Card> getAllCards() {
+		return allCards;
+	}
+	public Set<Card> getWeaponCards() {
+		return weaponCards;
+	}
+	public Set<Card> getRoomCards() {
+		return roomCards;
+	}
+	public Set<Card> getPersonCards() {
+		return personCards;
+	}
+	public Set<Card> getTheAnswer() {
+		return theAnswer;
+	}
+	public List<Card> getAllCardsList() {
+		return allCardsList;
+	}
+	
+	
+	
 }
