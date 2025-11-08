@@ -19,12 +19,13 @@ public class Board {
 	private Set<BoardCell> doors;
 	private Set<Player> players;
 	private Set<String> weapons;
-	private Set<Card> allCards;
-	private Set<Card> weaponCards;
-	private Set<Card> roomCards;
-	private Set<Card> personCards;
-	private Set<Card> theAnswer;
-	private List<Card> allCardsList;
+	private List<Card> allCards;
+	private List<Card> allDealableCards;
+	private List<Card> weaponCards;
+	private List<Card> roomCards;
+	private List<Card> personCards;
+	private List<Card> theAnswer;
+	//private List<Card> allDealableCardsList;
 	private int roomCount;
 	private int doorCount;
 
@@ -66,10 +67,10 @@ public class Board {
 		roomMap = new HashMap<>();
 		players = new HashSet<>();
 		weapons = new HashSet<>();
-		allCards = new HashSet<>();
-		weaponCards = new HashSet<>();
-		roomCards = new HashSet<>();
-		personCards = new HashSet<>();
+		allCards = new ArrayList<>();
+		weaponCards = new ArrayList<>();
+		roomCards = new ArrayList<>();
+		personCards = new ArrayList<>();
 		Card thisCard = new Card(null, null);
 		
 
@@ -480,7 +481,7 @@ public class Board {
 	}
 	
 	public void deal() {
-		theAnswer = new HashSet<>();
+		theAnswer = new ArrayList<>();
 		Random rand = new Random();
 		int answerRoomNum = rand.nextInt(roomCards.size());
 		int answerWeaponNum = rand.nextInt(weaponCards.size());
@@ -498,26 +499,24 @@ public class Board {
 		
 		theAnswer = answer.theAnswer();
 		
-		allCards.remove(answerRoom);
-		allCards.remove(answerPerson);
-		allCards.remove(answerWeapon);
+		allDealableCards = new ArrayList<>(allCards);
+		
+		allDealableCards.remove(answerRoom);
+		allDealableCards.remove(answerPerson);
+		allDealableCards.remove(answerWeapon);
 		
 		int playerNum = 0;
 		List<Player> playersList = new ArrayList<>(players);
-		allCardsList = new ArrayList<>(allCards);
 		
 		
-		for (Card card: allCards) {
-			int thisCardNum = rand.nextInt(allCardsList.size());			
-			Card givingCard = allCardsList.get(thisCardNum);
+		while (!allDealableCards.isEmpty()) {
+			int thisCardNum = rand.nextInt(allDealableCards.size());			
+			Card givingCard = allDealableCards.get(thisCardNum);
 			Player recievingPlayer = playersList.get(playerNum);
 			recievingPlayer.addCard(givingCard);
 			playerNum++;
-			if (playerNum >= 6) { playerNum = 0; }
-			allCardsList.remove(givingCard);
-			
-			
-			
+			if (playerNum >= playersList.size()) { playerNum = 0; }
+			allDealableCards.remove(thisCardNum);
 		}
 		
 	}
@@ -582,23 +581,24 @@ public class Board {
 		}
 		return thisWeapon;
 	}
-	public Set<Card> getAllCards() {
+	public List<Card> getAllCards() {
 		return allCards;
 	}
-	public Set<Card> getWeaponCards() {
+	public List<Card> getWeaponCards() {
 		return weaponCards;
 	}
-	public Set<Card> getRoomCards() {
+	public List<Card> getRoomCards() {
 		return roomCards;
 	}
-	public Set<Card> getPersonCards() {
+	public List<Card> getPersonCards() {
 		return personCards;
 	}
-	public Set<Card> getTheAnswer() {
+	public List<Card> getTheAnswer() {
 		return theAnswer;
 	}
-	public List<Card> getAllCardsList() {
-		return allCardsList;
+
+	public List<Card> getAllDealableCards() {
+		return allDealableCards;
 	}
 	
 	

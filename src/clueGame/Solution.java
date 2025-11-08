@@ -1,7 +1,7 @@
 package clueGame;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Solution {
 	
@@ -15,8 +15,8 @@ public class Solution {
 		this.person = person;
 	}
 	
-	public Set<Card> theAnswer() {
-		Set<Card> theAnswer = new HashSet<>();
+	public List<Card> theAnswer() {
+		List<Card> theAnswer = new ArrayList<>();
 		theAnswer.add(room);
 		theAnswer.add(weapon);
 		theAnswer.add(person);

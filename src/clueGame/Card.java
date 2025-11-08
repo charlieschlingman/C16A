@@ -10,4 +10,14 @@ public class Card {
 		this.cardName = cardName;
 		
 	}
+
+	public CardType getCardType() {
+		return cardType;
+	}
+
+	public String getCardName() {
+		return cardName;
+	}
+	
+	
 }

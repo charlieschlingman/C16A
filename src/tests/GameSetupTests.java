@@ -81,12 +81,13 @@ public class GameSetupTests {
 	
 	@Test
 	public void testLoadingCards() {
-		Set<Card> allCards = board.getAllCards();
-		Set<Card> roomCards = board.getRoomCards();
-		Set<Card> weaponCards = board.getWeaponCards();
-		Set<Card> personCards = board.getPersonCards();
+		List<Card> allCards = board.getAllCards();
+		List<Card> roomCards = board.getRoomCards();
+		List<Card> weaponCards = board.getWeaponCards();
+		List<Card> personCards = board.getPersonCards();
 		
-		assertEquals(allCards.size(), 18);
+		assertEquals(allCards.size(), 21);
+
 		assertEquals(roomCards.size(), 9);
 		assertEquals(weaponCards.size(), 6);
 		assertEquals(personCards.size(), 6);
@@ -95,16 +96,26 @@ public class GameSetupTests {
 	
 	@Test
 	public void testDealingCards() {
-		Set<Card> theAnswer = board.getTheAnswer();
+		List<Card> theAnswer = board.getTheAnswer();
 		assertEquals(3, theAnswer.size());
 		
-		List<Card> allCardsList = board.getAllCardsList();
-		assertEquals(allCardsList.size(), 0);
+		List<Card> allDealableCards = board.getAllDealableCards();
+		assertEquals(allDealableCards.size(), 0);
+		
+		assertEquals(board.getThisPlayer("Mr. Tomato").getMyCards().size(), 3);
+		assertEquals(board.getThisPlayer("Prof. Blueberry").getMyCards().size(), 3);
+		assertEquals(board.getThisPlayer("Mrs. Orange").getMyCards().size(), 3);
+		assertEquals(board.getThisPlayer("Ms. Lettuce").getMyCards().size(), 3);
+		assertEquals(board.getThisPlayer("Mr. Mustard").getMyCards().size(), 3);
+		assertEquals(board.getThisPlayer("Ltn. Mayo").getMyCards().size(), 3);
+		
+		
+		
 		
 		Board board2 = Board.getInstance();
 		board2.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");		
 		board2.initialize();
-		Set<Card> theAnswer2 = board2.getTheAnswer();
+		List<Card> theAnswer2 = board2.getTheAnswer();
 		
 		assertNotEquals(theAnswer2, theAnswer);
 	}

@@ -1,8 +1,8 @@
 package clueGame;
 
 import java.awt.Color;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
 
@@ -11,7 +11,7 @@ public class Player {
 	private String playerType;
 	private Integer row;
 	private Integer col;
-	private Set<Card> myCards;
+	private List<Card> myCards;
 	
 	public Player(String name, Color playerColor, String playerType, Integer row, Integer col) {
 		this.name = name;
@@ -19,11 +19,11 @@ public class Player {
 		this.playerType = playerType;
 		this.row = row;
 		this.col = col;
+		myCards = new ArrayList<>();
 		
 	}
 	
 	public void addCard(Card card) {
-		myCards = new HashSet<>();
 		myCards.add(card);
 	}
 
@@ -46,6 +46,11 @@ public class Player {
 	public String getPlayerType() {
 		return playerType;
 	}
+
+	public List<Card> getMyCards() {
+		return myCards;
+	}
+	
 
 	
 	
