@@ -11,11 +11,17 @@ public class ComputerPlayer extends Player {
 	// Constructor
 	public ComputerPlayer(String name, Color playerColor, String playerType, Integer row, Integer col) {
 		super(name, playerColor, playerType, row, col);
+		seenCards = new ArrayList<>();
 	}
 
 	// Update the seenCards list
 	public void seeCard(Card newCard) {
 		seenCards.add(newCard);
+	}
+
+	// Return seenCards
+	public List<Card> getSeenCards() {
+		return seenCards;
 	}
 
 	// Create suggestion based on current room and unseen cards
@@ -44,7 +50,7 @@ public class ComputerPlayer extends Player {
 		Card person = unseenPeople.get(rand.nextInt(unseenPeople.size()));
 		Card weapon = unseenWeapons.get(rand.nextInt(unseenWeapons.size()));
 
-		return new Solution(person, roomCard, weapon);
+		return new Solution(roomCard, weapon, person);
 	}
 
 	// Computer player selects target
@@ -54,14 +60,21 @@ public class ComputerPlayer extends Player {
 		for (BoardCell target : targets) {
 			if (target.isRoomCenter()) {
 				Room room = board.getRoom(target);
-				Card roomCard = new Card(CardType.ROOM, room.getName());
-				if (!seenCards.contains(roomCard)) {
+				boolean seen = false;
+				for (Card c : seenCards) {
+					if (c.getCardType() == CardType.ROOM && c.getCardName().equals(room.getName())) {
+						seen = true;
+						break;
+					}
+				}
+				if (!seen) {
 					roomTargets.add(target);
 				}
 			}
 		}
 
 		if (!roomTargets.isEmpty()) {
+			System.out.println("Jerry: " + roomTargets.get(rand.nextInt(roomTargets.size())));
 			return roomTargets.get(rand.nextInt(roomTargets.size()));
 		}
 
