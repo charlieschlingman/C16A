@@ -524,6 +524,31 @@ public class Board {
 		}
 		
 	}
+	
+	
+	public boolean testAccusation(Card room, Card weapon, Card person) throws Exception {
+		if (room.getCardType() != CardType.ROOM) {
+			throw new Exception("Invalid Room Card");
+		}
+		if (weapon.getCardType() != CardType.WEAPON) {
+			throw new Exception("Invalid Weapon Card");
+		}
+		if (person.getCardType() != CardType.PERSON) {
+			throw new Exception("Invalid Person Card");
+		}
+		List<Card> guess = new ArrayList<Card>();
+		
+		guess.add(room);
+		guess.add(weapon);
+		guess.add(person);
+		
+		if (guess.equals(theAnswer)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 	// Getter for targets (returns empty set if not initialized)
 	public Set<BoardCell> getTargets() {
@@ -610,7 +635,11 @@ public class Board {
 	public List<Card> getAllDealableCards() {
 		return allDealableCards;
 	}
-	
+	public void setTheAnswer(List<Card> theAnswer) {
+		this.theAnswer = theAnswer;
+	}
+
+
 	
 	
 }

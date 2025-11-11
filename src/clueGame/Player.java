@@ -23,6 +23,15 @@ public class Player {
 		myCards = new ArrayList<>();
 		
 	}
+	
+	
+	//public Card disproveSuggestion() {
+	//	if 
+	//	return null;
+	//}
+	
+	
+	
 	//Adds a card to the players hand
 	public void addCard(Card card) {
 		myCards.add(card);

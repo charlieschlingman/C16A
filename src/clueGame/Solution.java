@@ -15,6 +15,8 @@ public class Solution {
 		this.weapon = weapon;
 		this.person = person;
 	}
+	
+	
 	//Returns the answer of the current game
 	public List<Card> theAnswer() {
 		List<Card> theAnswer = new ArrayList<>();
