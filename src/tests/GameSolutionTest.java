@@ -116,7 +116,65 @@ public class GameSolutionTest {
 		assertTrue(cardsThatDisprove.contains(person));
 	}
 	
-	
+	@Test
+	public void testMakeSuggestion() throws Exception {
+		Player player1 = new Player("Player1", Color.black, "Human", 0, 0);
+		Card room = new Card(CardType.ROOM, "Arcade");
+		Card weapon = new Card(CardType.WEAPON, "Glock-19");
+		Card person = new Card(CardType.PERSON, "Mr. Mustard");
+		
+		player1.addCard(room);
+		player1.addCard(weapon);
+		player1.addCard(person);
+		
+		Player player2 = new Player("Player2", Color.cyan, "Human", 0, 0);
+		Card room2 = new Card(CardType.ROOM, "Master Bedroom");
+		Card weapon2 = new Card(CardType.WEAPON, "AK-47");
+		Card person2 = new Card(CardType.PERSON, "Lt. Mayo");
+		
+		player2.addCard(room2);
+		player2.addCard(weapon2);
+		player2.addCard(person2);
+		
+		Player player3 = new Player("Player3", Color.white, "Human", 0, 0);
+		Card room3 = new Card(CardType.ROOM, "Guest Bedroom");
+		Card weapon3 = new Card(CardType.WEAPON, "Lightsaber");
+		Card person3 = new Card(CardType.PERSON, "Mr. Tomato");
+		
+		player3.addCard(room3);
+		player3.addCard(weapon3);
+		player3.addCard(person3);
+		
+		Card wrongRoom = new Card(CardType.ROOM, "Den");
+		Card wrongWeapon = new Card(CardType.WEAPON, "Wandstick");
+		Card wrongPerson = new Card(CardType.PERSON, "Mrs. Orange");
+		
+		List<Player> players = new ArrayList<Player>();
+		players.add(player1);
+		players.add(player2);
+		players.add(player3);
+		
+		board.setPlayers(players);
+		
+		assertTrue(board.makeSuggestion(wrongRoom, wrongWeapon, person).equals(person));
+		assertTrue(board.makeSuggestion(room2, wrongWeapon, wrongPerson).equals(room2));
+		assertTrue(board.makeSuggestion(wrongRoom, weapon3, wrongPerson).equals(weapon3));
+		
+		assertThrows(Exception.class, () -> {
+			board.makeSuggestion(room, room, person);
+		});
+		assertThrows(Exception.class, () -> {
+			board.makeSuggestion(person, weapon, person);
+		});
+		assertThrows(Exception.class, () -> {
+			board.makeSuggestion(room, weapon, weapon);
+		});
+		
+		assertTrue(board.makeSuggestion(room, wrongWeapon, person2).equals(room));
+		assertTrue(board.makeSuggestion(room2, weapon, person3).equals(weapon));
+		assertTrue(board.makeSuggestion(room3, wrongWeapon, person).equals(person));
+		
+	}
 
 	
 }

@@ -549,6 +549,34 @@ public class Board {
 			return false;
 		}
 	}
+	
+	public Card makeSuggestion(Card room, Card weapon, Card person) throws Exception {
+		if (room.getCardType() != CardType.ROOM) {
+			throw new Exception("Invalid Room Card");
+		}
+		if (weapon.getCardType() != CardType.WEAPON) {
+			throw new Exception("Invalid Weapon Card");
+		}
+		if (person.getCardType() != CardType.PERSON) {
+			throw new Exception("Invalid Person Card");
+		}
+		List<Card> suggestion = new ArrayList<Card>();
+		
+		suggestion.add(room);
+		suggestion.add(weapon);
+		suggestion.add(person);
+		
+		int playerNum = 0;
+		
+		for (Player player: players) {
+			Player currentPlayer = players.get(playerNum);
+			if (currentPlayer.disproveSuggestion(suggestion) != null) {
+				return currentPlayer.disproveSuggestion(suggestion);
+			}
+			playerNum++;
+		}
+		return null;
+	}
 
 	// Getter for targets (returns empty set if not initialized)
 	public Set<BoardCell> getTargets() {
@@ -636,8 +664,17 @@ public class Board {
 		return allDealableCards;
 	}
 	public void setTheAnswer(List<Card> theAnswer) {
-		this.theAnswer = theAnswer;
+	    this.theAnswer.clear();
+	    this.theAnswer.addAll(theAnswer);
 	}
+
+	public void setPlayers(List<Player> players) {
+	    this.players.clear();
+	    this.players.addAll(players);
+	}
+
+	
+	
 
 
 	
