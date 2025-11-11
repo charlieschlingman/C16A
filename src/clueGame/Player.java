@@ -27,10 +27,13 @@ public class Player {
 	
 	
 	public Card disproveSuggestion(List<Card> suggestion) {
+		// Get a list of the cards that are matching (in case there are multiple)
 		List<Card> matching = new ArrayList<Card>();
+		//For each card in the suggestion, check to see if it is in the cards the player has
 		for (Card card: suggestion) {
 			if (myCards.contains(card)) { matching.add(card); }
 		}
+		//If there are more than one card, choose a random card to pick
 		Random rand = new Random();
 		if (matching.size() != 0){
 			int showingCard = rand.nextInt(matching.size());

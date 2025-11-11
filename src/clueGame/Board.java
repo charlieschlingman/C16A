@@ -527,6 +527,7 @@ public class Board {
 	
 	
 	public boolean testAccusation(Card room, Card weapon, Card person) throws Exception {
+		// Handle the cases where the user inputs the wrong type for the cards
 		if (room.getCardType() != CardType.ROOM) {
 			throw new Exception("Invalid Room Card");
 		}
@@ -536,12 +537,15 @@ public class Board {
 		if (person.getCardType() != CardType.PERSON) {
 			throw new Exception("Invalid Person Card");
 		}
+		
+		// Add the guess to an array list
 		List<Card> guess = new ArrayList<Card>();
 		
 		guess.add(room);
 		guess.add(weapon);
 		guess.add(person);
 		
+		// If the guess is equal to the answer, then return true, otherwise, return false
 		if (guess.equals(theAnswer)) {
 			return true;
 		}
@@ -551,6 +555,7 @@ public class Board {
 	}
 	
 	public Card makeSuggestion(Card room, Card weapon, Card person) throws Exception {
+		// Handle cases where the user inputs the wrong type for the cards
 		if (room.getCardType() != CardType.ROOM) {
 			throw new Exception("Invalid Room Card");
 		}
@@ -560,6 +565,8 @@ public class Board {
 		if (person.getCardType() != CardType.PERSON) {
 			throw new Exception("Invalid Person Card");
 		}
+		
+		// Add the suggestion to an array list
 		List<Card> suggestion = new ArrayList<Card>();
 		
 		suggestion.add(room);
@@ -568,6 +575,8 @@ public class Board {
 		
 		int playerNum = 0;
 		
+		// Cycle through the players, on each player, try to disprove the suggestion, if the suggestion returns a card, return that card, otherwise, keep
+		// looping through the players until all the players are looped through, and if no cards are returned, return null
 		for (Player player: players) {
 			Player currentPlayer = players.get(playerNum);
 			if (currentPlayer.disproveSuggestion(suggestion) != null) {
@@ -663,11 +672,12 @@ public class Board {
 	public List<Card> getAllDealableCards() {
 		return allDealableCards;
 	}
+	//Setter for theAnswer (used for tests)
 	public void setTheAnswer(List<Card> theAnswer) {
 	    this.theAnswer.clear();
 	    this.theAnswer.addAll(theAnswer);
 	}
-
+	//Setter for the Players List (used for tests)
 	public void setPlayers(List<Player> players) {
 	    this.players.clear();
 	    this.players.addAll(players);
