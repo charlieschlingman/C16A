@@ -3,6 +3,7 @@ package clueGame;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Player {
 
@@ -25,10 +26,19 @@ public class Player {
 	}
 	
 	
-	//public Card disproveSuggestion() {
-	//	if 
-	//	return null;
-	//}
+	public Card disproveSuggestion(List<Card> suggestion) {
+		List<Card> matching = new ArrayList<Card>();
+		for (Card card: suggestion) {
+			if (myCards.contains(card)) { matching.add(card); }
+		}
+		Random rand = new Random();
+		if (matching.size() != 0){
+			int showingCard = rand.nextInt(matching.size());
+			return matching.get(showingCard);
+		} else {
+			return null;
+		}
+	}
 	
 	
 	

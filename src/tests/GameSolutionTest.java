@@ -59,7 +59,64 @@ public class GameSolutionTest {
 	
 	@Test
 	public void testDisproveSuggestion() {
+		Player player = new Player("Player", Color.black, "Human", 0, 0);
+		Card room = new Card(CardType.ROOM, "Arcade");
+		Card weapon = new Card(CardType.WEAPON, "Glock-19");
+		Card person = new Card(CardType.PERSON, "Mr. Mustard");
 		
+		player.addCard(room);
+		player.addCard(weapon);
+		player.addCard(person);
+		
+		Card wrongPerson = new Card(CardType.PERSON, "Lt. Mayo");
+		Card wrongRoom = new Card(CardType.ROOM, "Master Bedroom");
+		Card wrongWeapon = new Card(CardType.WEAPON, "AK-47");
+		
+		List<Card> suggestion = new ArrayList<Card>();
+		suggestion.add(wrongPerson);
+		suggestion.add(wrongRoom);
+		suggestion.add(weapon);
+		
+		assertTrue((player.disproveSuggestion(suggestion).equals(weapon)));
+		
+		suggestion.clear();
+		suggestion.add(person);
+		suggestion.add(wrongRoom);
+		suggestion.add(wrongWeapon);
+		
+		assertTrue(player.disproveSuggestion(suggestion).equals(person));
+		
+		suggestion.clear();
+		suggestion.add(wrongPerson);
+		suggestion.add(room);
+		suggestion.add(wrongWeapon);
+		
+		assertTrue(player.disproveSuggestion(suggestion).equals(room));
+		
+		suggestion.clear();
+		suggestion.add(wrongPerson);
+		suggestion.add(wrongRoom);
+		suggestion.add(wrongWeapon);
+		
+		assertDoesNotThrow(() -> player.disproveSuggestion(suggestion));
+		
+		suggestion.clear();
+		suggestion.add(room);
+		suggestion.add(person);
+		suggestion.add(wrongWeapon);
+		
+		List<Card> cardsThatDisprove = new ArrayList<Card>();
+		while (cardsThatDisprove.size() < 2) {
+			Card cardThatDisproves = player.disproveSuggestion(suggestion);
+			if (!cardsThatDisprove.contains(cardThatDisproves)) {
+				cardsThatDisprove.add(cardThatDisproves);
+			}
+		}
+		assertTrue(cardsThatDisprove.contains(room));
+		assertTrue(cardsThatDisprove.contains(person));
 	}
+	
+	
+
 	
 }
