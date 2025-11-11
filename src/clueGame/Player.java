@@ -10,9 +10,9 @@ public class Player {
 	private String name;
 	private Color playerColor;
 	private String playerType;
-	private Integer row;
-	private Integer col;
-	private List<Card> myCards;
+	protected Integer row;
+	protected Integer col;
+	protected List<Card> myCards;
 	
 	//Constructor
 	public Player(String name, Color playerColor, String playerType, Integer row, Integer col) {
