@@ -22,54 +22,74 @@ public class GameControlPanel extends JPanel {
 
 	public GameControlPanel()  {
 		
+		// Set the layout of the display
 		setLayout(new GridLayout(2, 1));
 		
+		// Set the top part of the panel
 		JPanel topPanel = new JPanel(new GridLayout(1, 4));
 
+		
+		// Add a turn panel with text saying Whose Turn? and the person whose turn it is
 		JPanel turnPanel = new JPanel();
 		turnPanel.add(new JLabel("Whose Turn?"), BorderLayout.CENTER);
 
 		turn = new JTextField(15);
 
 		turnPanel.add(turn, BorderLayout.CENTER);
+		
+		// Add it to the top panel
 
 		topPanel.add(turnPanel, BorderLayout.WEST);
 
+		
+		// Do the same for the roll panel to display the roll
 		JPanel rollPanel = new JPanel();
 		rollPanel.add(new JLabel("Roll"), BorderLayout.NORTH);
 
 		roll = new JTextField(5);
 		rollPanel.add(roll, BorderLayout.CENTER);
+		
+		// Add to top panel
 
 		topPanel.add(rollPanel, BorderLayout.CENTER);
 
+		// Add a accusation button
 		JButton accusationButton = new JButton("Make Accusation"); 
 		topPanel.add(accusationButton); 
 		
+		// Add a next button
 		JButton nextButton = new JButton("Next Turn"); 
 		topPanel.add(nextButton);
 		
+		// Add the top panel to the display
 		add(topPanel);
 		
+		// Set the bottom panel
 		JPanel bottomPanel = new JPanel(new GridLayout(1, 2));
 		
+		// Set the guess panel to have a border
 		JPanel guessPanel = new JPanel();
 		guessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Guess"));
 		
+		// Add the guess that the person makes
 		guessDisplay = new JTextField(20);
 		guessPanel.add(guessDisplay, BorderLayout.WEST);
 		
-		
+		// Add it to the bottom panel
 		bottomPanel.add(guessPanel, BorderLayout.WEST);
 		
+		// Add a result panel with the border that says result
 		JPanel resultPanel = new JPanel();
 		resultPanel.setBorder(new TitledBorder(new EtchedBorder(), "Result"));
 		
+		// Add a guess result to the panel
 		guessResult = new JTextField(20);
 		resultPanel.add(guessResult, BorderLayout.WEST);
 		
+		// Add it to the bottom panel
 		bottomPanel.add(resultPanel, BorderLayout.CENTER);
 		
+		// Add the bottom panel
 		add(bottomPanel);
 		
 		
@@ -78,16 +98,17 @@ public class GameControlPanel extends JPanel {
 
 	}
 	
+	// Set the guess given a string
 	public void setGuess(String guess) {
 		guessDisplay.setText(guess);
 	}
 	
-	
+	// Set the result given a result
 	public void setGuessResult(String result) {
 		guessResult.setText(result);
 	}
 	
-	
+	// Set the turn text and background given a player, and a roll given a roll count
 	public void setTurn(Player player, int givenRoll) {
 		turn.setText(player.getName());
 		turn.setBackground(player.getColor());
