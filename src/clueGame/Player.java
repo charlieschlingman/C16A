@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.awt.*;
 
 public class Player {
 
@@ -74,8 +75,16 @@ public class Player {
 		return myCards;
 	}
 	
+	// Draw Player
+	public void draw(Graphics g, int cellSize) {
+	    int x = col * cellSize;
+	    int y = row * cellSize;
 
-	
+	    g.setColor(playerColor);
+	    g.fillOval(x, y, cellSize, cellSize);
+	    g.setColor(Color.BLACK);
+	    g.drawOval(x, y, cellSize, cellSize);
+	}
 	
 	
 }
