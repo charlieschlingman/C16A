@@ -12,21 +12,21 @@ public class ClueGame extends JFrame {
     private BoardPanel board;
 
     public ClueGame() {
-        super("Clue Game");  // Title of the window
+        super("Clue Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1600, 900);
         setLayout(new BorderLayout());
 
-        // BOARD PANEL
+        // Board
         board = BoardPanel.getInstance();  // Singleton Board
-        board.initialize();           // Loads layout + setup
+        board.initialize(); 
         add(board, BorderLayout.CENTER);
 
-        // RIGHT PANEL
+        // Right Panel
         CardControlPanel cardpanel = new CardControlPanel();
         add(cardpanel, BorderLayout.EAST);
 
-        // BOTTOM PANEL
+        // Bottom Panel
         GameControlPanel gamepanel = new GameControlPanel();
         add(gamepanel, BorderLayout.SOUTH);
     }
@@ -37,8 +37,5 @@ public class ClueGame extends JFrame {
         ClueGame game = new ClueGame();
         game.setVisible(true);
     }
-	
-	
-	
 	
 }

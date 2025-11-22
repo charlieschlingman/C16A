@@ -156,6 +156,10 @@ public class BoardCell {
 	public boolean isWalkway() {
 		return initial == 'W';
 	}
+	
+	public boolean isUnused() {
+        return initial == 'X';
+    }
 
 	// Override toString
 	@Override
@@ -164,23 +168,31 @@ public class BoardCell {
 	}
 
 	// Draws the Cell
-	public void draw(Graphics g, int cellSize) {
-		int x = column * cellSize;
-		int y = row * cellSize;
+	public void draw(Graphics g, int cellSize, int xOffset, int yOffset) {
+	    int x = xOffset + column * cellSize;
+	    int y = yOffset + row * cellSize;
+		
+	    // Empty space
+		if (isUnused()) {
+            g.setColor(Color.BLACK);
+            g.fillRect(x, y, cellSize, cellSize);
+            return;
+        }
 
+		// Walkway
 		if (isWalkway()) {
 			g.setColor(Color.YELLOW);
 			g.fillRect(x, y, cellSize, cellSize);
 			g.setColor(Color.BLACK);
 			g.drawRect(x, y, cellSize, cellSize);
 		}
+		// Room
 		else {
-			// Room tile
 			g.setColor(Color.LIGHT_GRAY);
 			g.fillRect(x, y, cellSize, cellSize);
 		}
 
-		// Draw door indicator
+		// Draw doorways
 		if (isDoorway()) {
 			g.setColor(Color.BLUE);
 			int thickness = Math.max(4, cellSize / 8);

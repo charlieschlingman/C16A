@@ -76,9 +76,12 @@ public class Player {
 	}
 	
 	// Draw Player
-	public void draw(Graphics g, int cellSize) {
-	    int x = col * cellSize;
-	    int y = row * cellSize;
+	public void draw(Graphics g, int cellSize, int xOffset, int yOffset) {
+	    int x = xOffset + col * cellSize;
+	    int y = yOffset + row * cellSize;
+
+	    int margin = cellSize / 8;
+	    int size   = cellSize - 2 * margin;
 
 	    g.setColor(playerColor);
 	    g.fillOval(x, y, cellSize, cellSize);

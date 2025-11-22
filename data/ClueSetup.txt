@@ -17,7 +17,7 @@ Player, Blue, Computer, Prof. Blueberry, 17, 0
 Player, Orange, Computer, Mrs. Orange, 9, 0
 Player, Green, Computer, Ms. Lettuce, 0, 6
 Player, Yellow, Computer, Mr. Mustard, 0, 17
-Player, White, Computer, Ltn. Mayo, 8, 23
+Player, White, Computer, Ltn. Mayo, 7, 23
 // Weapons
 Weapon, AK-47
 Weapon, Glock 19
