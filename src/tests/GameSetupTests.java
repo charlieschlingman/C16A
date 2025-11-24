@@ -53,7 +53,7 @@ public class GameSetupTests {
 		assertEquals(board.getThisPlayer("Mrs. Orange").getRow(), 9);
 		assertEquals(board.getThisPlayer("Ms. Lettuce").getRow(), 0);
 		assertEquals(board.getThisPlayer("Mr. Mustard").getRow(), 0);
-		assertEquals(board.getThisPlayer("Ltn. Mayo").getRow(), 8);
+		assertEquals(board.getThisPlayer("Ltn. Mayo").getRow(), 7);
 		
 		//Checks to see if all of the players have the proper starting column
 		assertEquals(board.getThisPlayer("Mr. Tomato").getCol(), 7);

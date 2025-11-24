@@ -178,7 +178,7 @@ public class BoardPanel extends JPanel {
 
     private void drawRoomLabels(Graphics g, int cellSize, int xOffset, int yOffset) {
         g.setColor(Color.BLUE);
-        g.setFont(new Font("Arial", Font.BOLD, cellSize));
+        g.setFont(new Font("Arial", Font.BOLD, cellSize - 4));
 
         for (int r = 0; r < numRows; r++) {
             for (int c = 0; c < numCols; c++) {
@@ -186,10 +186,47 @@ public class BoardPanel extends JPanel {
 
                 if (cell.isLabel()) {
                     String label = rooms.get(cell.getInitial());
+                    int offset;
                     int x = xOffset + c * cellSize;
                     int y = yOffset + r * cellSize;
+                    switch (label) {
+                    	case ("Master Bedroom"):
+                    		offset = (int)(cellSize * 2.2);
+                    		x -= offset;
+                    		g.drawString(label, x, y);
+                    		break;
+                    	case ("Guest Bedroom"):
+                    		offset = (int)(cellSize * 2.1);
+                    		x -= offset;
+                			g.drawString(label, x, y);
+                    		break;
+                    	case ("Restroom"):
+                    		offset = (int)(cellSize * 1);
+                			x -= offset;
+                			g.drawString(label, x, y);
+                    		break;
+                    	case ("Den"):
+	                        g.drawString(label, x, y);
+                    		break;
+                    	case ("Patio"):
+                    		g.drawString(label, x, y);
+                    		break;
+                    	case ("Closet"):
+	                        g.drawString(label, x, y);
+                    		break;
+                    	case ("Barroom"):
+                    		offset = (int)(cellSize * 1.2);
+            				x -= offset;
+                			g.drawString(label, x, y);
+                    		break;
+                    	case ("Arcade"):
+                    		g.drawString(label, x, y);
+                    		break;
+                    	case ("Office"):
+                    		g.drawString(label, x, y);
+                    		break;
+                    }
 
-                    g.drawString(label, x, y);
                 }
             }
         }
