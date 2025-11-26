@@ -1,0 +1,7 @@
+commit 4cb9c7fcb4bc94623eed707cd7b21ee822967daf
+Author: charlie_schlingman <charlie_schlingman@mines.edu>
+Date:   Mon Nov 24 16:06:50 2025 -0700
+
+    made it so room labels are properly centered and so that they move with the window size properly
+
+

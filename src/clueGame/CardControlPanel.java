@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.awt.*;
+import java.util.Random;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -45,7 +46,6 @@ public class CardControlPanel extends JPanel {
 
 		add(borderPanel, BorderLayout.NORTH);
 
-		loadTestData();
 	}
 
 	// Create panels for each category
@@ -78,7 +78,7 @@ public class CardControlPanel extends JPanel {
 	}
 
 	// Add a card to the panel
-	private void addCard(JPanel panel, String text, Color color) {
+	private void addTestCard(JPanel panel, String text, Color color) {
 		JTextField field = new JTextField(text);
 		field.setEditable(false);
 		field.setBackground(color);
@@ -86,46 +86,74 @@ public class CardControlPanel extends JPanel {
 		field.setPreferredSize(new Dimension(180, 20));
 		panel.add(field);
 	}
+	
+	public void addHandCard(Card card) {
+		CardType cardType = card.getCardType();
+		JTextField field = new JTextField(card.getCardName());
+		field.setEditable(false);
+		
+		Color[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.ORANGE, Color.CYAN, Color.MAGENTA, Color.PINK, Color.LIGHT_GRAY};
+		Random rand = new Random();
+		Color randomColor = colors[rand.nextInt(colors.length)];
+		
+		field.setBackground(randomColor);
+		field.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
+		field.setPreferredSize(new Dimension(180, 20));
+		switch(cardType) {
+		case CardType.WEAPON:
+			weaponsHandPanel.add(field);
+			break;
+		case CardType.PERSON:
+			peopleHandPanel.add(field);
+			break;
+		case CardType.ROOM:
+			roomsHandPanel.add(field);
+			break;
+			
+			
+		}
+	}
 
 
 	// Test Data
 	private void loadTestData() {
 		// People – Hand
-		addCard(peopleHandPanel, "Colonel Mustard", Color.WHITE);
+		addTestCard(peopleHandPanel, "Colonel Mustard", Color.WHITE);
 
 		// People – Seen
-		addCard(peopleSeenPanel, "Mrs. White", Color.YELLOW);
-		addCard(peopleSeenPanel, "Miss Scarlett", Color.WHITE);
-		addCard(peopleSeenPanel, "Mrs. Peacock", Color.GREEN);
-		addCard(peopleSeenPanel, "Reverend Green", new Color(185, 235, 255));
+		addTestCard(peopleSeenPanel, "Mrs. White", Color.YELLOW);
+		addTestCard(peopleSeenPanel, "Miss Scarlett", Color.WHITE);
+		addTestCard(peopleSeenPanel, "Mrs. Peacock", Color.GREEN);
+		addTestCard(peopleSeenPanel, "Reverend Green", new Color(185, 235, 255));
 
 		// Rooms – Hand
 		// nothing added
 
 		// Rooms – Seen
-		addCard(roomsSeenPanel, "Hall", Color.YELLOW);
-		addCard(roomsSeenPanel, "Ballroom", Color.WHITE);
-		addCard(roomsSeenPanel, "Kitchen", Color.WHITE);
-		addCard(roomsSeenPanel, "Billiard Room", Color.GREEN);
-		addCard(roomsSeenPanel, "Conservatory", new Color(185, 235, 255));
-		addCard(roomsSeenPanel, "Lounge", new Color(185, 235, 255));
-		addCard(roomsSeenPanel, "Library", Color.WHITE);
-		addCard(roomsSeenPanel, "Dining Room", new Color(230, 190, 255));
+		addTestCard(roomsSeenPanel, "Hall", Color.YELLOW);
+		addTestCard(roomsSeenPanel, "Ballroom", Color.WHITE);
+		addTestCard(roomsSeenPanel, "Kitchen", Color.WHITE);
+		addTestCard(roomsSeenPanel, "Billiard Room", Color.GREEN);
+		addTestCard(roomsSeenPanel, "Conservatory", new Color(185, 235, 255));
+		addTestCard(roomsSeenPanel, "Lounge", new Color(185, 235, 255));
+		addTestCard(roomsSeenPanel, "Library", Color.WHITE);
+		addTestCard(roomsSeenPanel, "Dining Room", new Color(230, 190, 255));
 
 		// Weapons – Hand
-		addCard(weaponsHandPanel, "Wrench", Color.WHITE);
-		addCard(weaponsHandPanel, "Rope", Color.WHITE);
+		addTestCard(weaponsHandPanel, "Wrench", Color.WHITE);
+		addTestCard(weaponsHandPanel, "Rope", Color.WHITE);
 
 		// Weapons – Seen
-		addCard(weaponsSeenPanel, "Lead Pipe", Color.YELLOW);
-		addCard(weaponsSeenPanel, "Dagger", new Color(230, 190, 255));
-		addCard(weaponsSeenPanel, "Revolver", new Color(185, 235, 255));
+		addTestCard(weaponsSeenPanel, "Lead Pipe", Color.YELLOW);
+		addTestCard(weaponsSeenPanel, "Dagger", new Color(230, 190, 255));
+		addTestCard(weaponsSeenPanel, "Revolver", new Color(185, 235, 255));
 	}
 
 
 	public static void main(String[] args) {
 		CardControlPanel panel = new CardControlPanel();
 		JFrame frame = new JFrame();  // create the frame 
+		panel.loadTestData();
 		frame.setContentPane(panel); // put the panel in the frame
 		frame.setSize(200, 750);  // size the frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close

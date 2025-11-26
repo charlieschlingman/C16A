@@ -11,6 +11,8 @@ public class BoardPanel extends JPanel {
     private int numRows;
     private int numCols;
     private static final Map<String, Color> colorMap = new HashMap<>();
+    private static Board theBoard;
+    private Set<BoardCell> targets = new HashSet<>();
 
     // Singleton principle
     private static BoardPanel instance = new BoardPanel();
@@ -51,6 +53,9 @@ public class BoardPanel extends JPanel {
         try {
             loadSetupConfig();
             loadLayoutConfig();
+            theBoard = Board.getInstance();
+            theBoard.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");		
+    		theBoard.initialize();
         } 
         catch (Exception e) {
             e.printStackTrace();
@@ -163,7 +168,15 @@ public class BoardPanel extends JPanel {
         // Draw board cells
         for (int r = 0; r < numRows; r++) {
             for (int c = 0; c < numCols; c++) {
-            	grid[r][c].draw(g, cellSize, xOffset, yOffset);
+            	BoardCell cell = grid[r][c];
+                boolean isTarget = false;
+                for (BoardCell t : targets) {
+                    if (t.getRow() == cell.getRow() && t.getColumn() == cell.getColumn()) {
+                        isTarget = true;
+                        break;
+                    }
+                }
+                cell.draw(g, cellSize, xOffset, yOffset, isTarget);
             }
         }
 
@@ -240,4 +253,17 @@ public class BoardPanel extends JPanel {
     public ArrayList<Player> getPlayers() {
         return players;
     }
+    
+    public Board getBoard() {
+    	return theBoard;
+    }
+    
+    public void setTargets(Set<BoardCell> targets) {
+        this.targets = targets;
+        repaint();
+    }
+    public Set<BoardCell> getTargets() {
+    	return targets;
+    }
+
 }

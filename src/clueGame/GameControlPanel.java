@@ -3,6 +3,8 @@ package clueGame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,6 +19,8 @@ public class GameControlPanel extends JPanel {
 	private JTextField roll;
 	private JTextField guessDisplay;
 	private JTextField guessResult;
+	public boolean nextClicked = false;
+	
 
 
 
@@ -61,6 +65,8 @@ public class GameControlPanel extends JPanel {
 		JButton nextButton = new JButton("Next Turn"); 
 		topPanel.add(nextButton);
 		
+		nextButton.addActionListener(new nextListener());
+		
 		// Add the top panel to the display
 		add(topPanel);
 		
@@ -98,6 +104,16 @@ public class GameControlPanel extends JPanel {
 
 	}
 	
+	
+	// Inner class to handle the button action.
+	private class nextListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("Button clicked!");
+			nextClicked = true;
+		}
+	}
+	
 	// Set the guess given a string
 	public void setGuess(String guess) {
 		guessDisplay.setText(guess);
@@ -114,6 +130,7 @@ public class GameControlPanel extends JPanel {
 		turn.setBackground(player.getColor());
 		roll.setText(Integer.toString(givenRoll));
 	}
+	
 
 	
 	
@@ -127,7 +144,7 @@ public class GameControlPanel extends JPanel {
 		frame.setVisible(true); // make it visible
 		
 		// test filling in the data
-		panel.setTurn(new HumanPlayer( "Col. Mustard", Color.ORANGE, "Human", 0, 0), 5);
+		panel.setTurn(new HumanPlayer( "Col. Mustard", Color.ORANGE, "Human", 0, 0), 4);
 		panel.setGuess( "I have no guess!");
 		panel.setGuessResult( "So you have nothing?");
 	}

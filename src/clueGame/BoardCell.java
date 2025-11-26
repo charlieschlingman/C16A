@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.awt.*;
 
@@ -168,7 +169,7 @@ public class BoardCell {
 	}
 
 	// Draws the Cell
-	public void draw(Graphics g, int cellSize, int xOffset, int yOffset) {
+	public void draw(Graphics g, int cellSize, int xOffset, int yOffset, boolean isTarget) {
 	    int x = xOffset + column * cellSize;
 	    int y = yOffset + row * cellSize;
 		
@@ -178,9 +179,16 @@ public class BoardCell {
             g.fillRect(x, y, cellSize, cellSize);
             return;
         }
-
+		
+		// Target
+		if (isTarget) {
+			g.setColor(Color.CYAN);
+			g.fillRect(x, y, cellSize, cellSize);
+			g.setColor(Color.BLACK);
+			g.drawRect(x, y, cellSize, cellSize);
+		}
 		// Walkway
-		if (isWalkway()) {
+		else if (isWalkway()) {
 			g.setColor(Color.YELLOW);
 			g.fillRect(x, y, cellSize, cellSize);
 			g.setColor(Color.BLACK);
@@ -214,6 +222,10 @@ public class BoardCell {
 				break;
 			}
 		}
+		
+		
 	}
+	
+
 
 }
