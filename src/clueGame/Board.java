@@ -147,8 +147,15 @@ public class Board {
 					int playerColInt = Integer.parseInt(playerCol);
 
 					
-					Player player = new Player(name, playerColor, playerType, playerRowInt, playerColInt);
-					players.add(player);
+					
+					if (players.isEmpty()) {
+					    // First defined player is the human
+					    players.add(new Player(name, playerColor, playerType, playerRowInt, playerColInt));
+					} else {
+					    // All others are computers
+					    players.add(new ComputerPlayer(name, playerColor, playerType, playerRowInt, playerColInt));
+					}
+					
 					thisCard = new Card(CardType.PERSON, name);
 					allCards.add(thisCard);
 					personCards.add(thisCard);

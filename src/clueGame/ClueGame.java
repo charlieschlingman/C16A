@@ -125,7 +125,42 @@ public class ClueGame extends JFrame {
 		// Redraw
 		board.repaint();
 	}
+	
+	private void computerTurn(ComputerPlayer cpu, int roll, Board theBoard) {
+	    // Calculate all possible targets
+	    BoardCell start = theBoard.getCell(cpu.getRow(), cpu.getCol());
+	    theBoard.calcTargets(start, roll);
+	    Set<BoardCell> targets = theBoard.getTargets();
 
+	    if (targets.isEmpty()) {
+	        System.out.println(cpu.getName() + " cannot move.");
+	        return;
+	    }
+
+	    // Select targets
+	    BoardCell dest = cpu.selectTargetAI(targets, theBoard);
+
+	    // Mark old cell unoccupied
+	    BoardCell oldCell = theBoard.getCell(cpu.getRow(), cpu.getCol());
+	    oldCell.setOccupied(false);
+
+	    // Move the CPU
+	    cpu.setLocation(dest.getRow(), dest.getColumn());
+
+	    // Mark new location occupied
+	    dest.setOccupied(true);
+
+	    // Clear highlights
+	    board.setTargets(new HashSet<>());
+
+	    // Repaint the board
+	    board.repaint();
+
+	    //If CPU enters a room, generate a suggestion
+	    if (dest.isRoomCenter()) {
+	        //TODO: add suggestion logic
+	    }
+	}
 
 
 	public static void main(String[] args) {
@@ -172,8 +207,8 @@ public class ClueGame extends JFrame {
 
 			// If it is not the human player, make it so there are no targets available
 			else {
-				targets.clear();
-				game.board.setTargets(targets);
+				ComputerPlayer cpu = (ComputerPlayer) players.get(game.getTurn());
+			    game.computerTurn(cpu, roll, theBoard);
 			}
 			
 			// While the next button hasn't been clicked, loop through this
