@@ -53,6 +53,12 @@ public class Board {
 		catch (BadConfigFormatException e) {
 			System.err.println("Configuration error: " + e.getMessage());
 		}
+		
+		// Mark starting cells as occupied
+		for (Player p : players) {
+            BoardCell start = getCell(p.getRow(), p.getCol());
+            start.setOccupied(true);
+        }
 	}
 
 	// Sets configuration files

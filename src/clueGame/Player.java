@@ -44,6 +44,11 @@ public class Player {
 		}
 	}
 	
+	// Set player location
+	public void setLocation(int r, int c) {
+		this.row = r;
+		this.col = c;
+	}
 	
 	
 	//Adds a card to the players hand
