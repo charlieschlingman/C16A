@@ -20,6 +20,7 @@ public class GameControlPanel extends JPanel {
 	private JTextField guessDisplay;
 	private JTextField guessResult;
 	public boolean nextClicked = false;
+	public boolean accusationClicked = false;
 	
 
 
@@ -60,6 +61,8 @@ public class GameControlPanel extends JPanel {
 		// Add a accusation button
 		JButton accusationButton = new JButton("Make Accusation"); 
 		topPanel.add(accusationButton); 
+		
+		accusationButton.addActionListener(new accListener());
 		
 		// Add a next button
 		JButton nextButton = new JButton("Next Turn"); 
@@ -113,6 +116,15 @@ public class GameControlPanel extends JPanel {
 			nextClicked = true;
 		}
 	}
+	
+	// Inner class to handle the button action.
+		private class accListener implements ActionListener {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Accusation clicked!");
+				accusationClicked = true;
+			}
+		}
 	
 	// Set the guess given a string
 	public void setGuess(String guess) {

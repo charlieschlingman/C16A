@@ -161,6 +161,7 @@ public class BoardCell {
 	public boolean isUnused() {
         return initial == 'X';
     }
+	
 
 	// Override toString
 	@Override

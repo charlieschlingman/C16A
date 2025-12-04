@@ -113,6 +113,35 @@ public class CardControlPanel extends JPanel {
 			
 		}
 	}
+	
+	public void addSeenCard(Card card) {
+		CardType cardType = card.getCardType();
+		JTextField field = new JTextField(card.getCardName());
+		field.setEditable(false);
+		
+		Color[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.ORANGE, Color.CYAN, Color.MAGENTA, Color.PINK, Color.LIGHT_GRAY};
+		Random rand = new Random();
+		Color randomColor = colors[rand.nextInt(colors.length)];
+		
+		field.setBackground(randomColor);
+		field.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
+		field.setPreferredSize(new Dimension(180, 20));
+		switch(cardType) {
+		case CardType.WEAPON:
+			weaponsSeenPanel.add(field);
+			break;
+		case CardType.PERSON:
+			peopleSeenPanel.add(field);
+			break;
+		case CardType.ROOM:
+			roomsSeenPanel.add(field);
+			break;
+			
+			
+		}
+		revalidate();
+		repaint();
+	}
 
 
 	// Test Data

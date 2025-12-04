@@ -27,6 +27,7 @@ public class Board {
 	private List<Card> theAnswer;
 	private int roomCount;
 	private int doorCount;
+	private int currentPlayerIndex = -1;
 
 
 	/*
@@ -586,16 +587,22 @@ public class Board {
 		suggestion.add(weapon);
 		suggestion.add(person);
 		
-		int playerNum = 0;
-		
 		// Cycle through the players, on each player, try to disprove the suggestion, if the suggestion returns a card, return that card, otherwise, keep
 		// looping through the players until all the players are looped through, and if no cards are returned, return null
-		for (Player player: players) {
-			Player currentPlayer = players.get(playerNum);
-			if (currentPlayer.disproveSuggestion(suggestion) != null) {
-				return currentPlayer.disproveSuggestion(suggestion);
+		for (int i = 0; i < players.size(); i++) {
+			Player currentPlayer = players.get(i);
+			// Skip the player if they are the one making the accusation (-1 in place so previous tests still pass)
+			if (currentPlayerIndex != -1 && currentPlayerIndex == i) {
+				System.out.println("Skipping Player " + currentPlayer.getName());
+				continue;
+				}
+			System.out.println("Checking Player " + currentPlayer.getName());
+			Card disprove = currentPlayer.disproveSuggestion(suggestion);
+			
+			if (disprove != null) {
+				System.out.println("Found With Player " + currentPlayer.getName());
+				return disprove;
 			}
-			playerNum++;
 		}
 		return null;
 	}
@@ -694,6 +701,10 @@ public class Board {
 	public void setPlayers(List<Player> players) {
 	    this.players.clear();
 	    this.players.addAll(players);
+	}
+	
+	public void setCurrentPlayerIndex(int index) {
+		this.currentPlayerIndex = index;
 	}
 
 	
