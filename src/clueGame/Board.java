@@ -28,6 +28,7 @@ public class Board {
 	private int roomCount;
 	private int doorCount;
 	private int currentPlayerIndex = -1;
+	private Player lastDisprovingPlayer = null;
 
 
 	/*
@@ -54,12 +55,12 @@ public class Board {
 		catch (BadConfigFormatException e) {
 			System.err.println("Configuration error: " + e.getMessage());
 		}
-		
+
 		// Mark starting cells as occupied
 		for (Player p : players) {
-            BoardCell start = getCell(p.getRow(), p.getCol());
-            start.setOccupied(true);
-        }
+			BoardCell start = getCell(p.getRow(), p.getCol());
+			start.setOccupied(true);
+		}
 	}
 
 	// Sets configuration files
@@ -78,7 +79,7 @@ public class Board {
 		roomCards = new ArrayList<>();
 		personCards = new ArrayList<>();
 		Card thisCard = new Card(null, null);
-		
+
 
 		try (Scanner in = new Scanner(new File(setupConfigFile))) {
 			while (in.hasNextLine()) {
@@ -88,12 +89,12 @@ public class Board {
 				String[] parts = line.split(",");
 
 				String type = parts[0].trim();
-				
+
 				// If not of correct type, then throws error
 				if (!type.equals("Room") && !type.equals("Space") && !type.equals("Player") && !type.equals("Weapon")) {
 					throw new BadConfigFormatException("Unknown room type: " + type);
 				}
-				
+
 				// Handles rooms, if it is a room, it adds it to the room cards list
 				if (type.equals("Room") || type.equals("Space")) {
 					if (parts.length != 3) {
@@ -108,7 +109,7 @@ public class Board {
 						roomCards.add(thisCard);
 					}
 				}
-				
+
 				// Handles players, assigns color, type, and name, as well as adding it to the player card list
 				if (type.equals("Player")) {
 					if (parts.length != 6) {
@@ -138,31 +139,31 @@ public class Board {
 					default:
 						throw new BadConfigFormatException("Unknown color: " + colorString);
 					}
-					
+
 					String playerType = parts[2].trim();
 					String name = parts[3].trim();
-					
+
 					String playerRow = parts[4].trim();
 					String playerCol = parts[5].trim();
 					int playerRowInt = Integer.parseInt(playerRow);
 					int playerColInt = Integer.parseInt(playerCol);
 
-					
-					
+
+
 					if (players.isEmpty()) {
-					    // First defined player is the human
-					    players.add(new Player(name, playerColor, playerType, playerRowInt, playerColInt));
+						// First defined player is the human
+						players.add(new Player(name, playerColor, playerType, playerRowInt, playerColInt));
 					} else {
-					    // All others are computers
-					    players.add(new ComputerPlayer(name, playerColor, playerType, playerRowInt, playerColInt));
+						// All others are computers
+						players.add(new ComputerPlayer(name, playerColor, playerType, playerRowInt, playerColInt));
 					}
-					
+
 					thisCard = new Card(CardType.PERSON, name);
 					allCards.add(thisCard);
 					personCards.add(thisCard);
-					
+
 				}
-				
+
 				// Handles weapons, adds it to the weapon card list
 				if (type.equals("Weapon")) {
 					if (parts.length != 2) {
@@ -173,9 +174,9 @@ public class Board {
 					thisCard = new Card(CardType.WEAPON, weapon);
 					allCards.add(thisCard);
 					weaponCards.add(thisCard);
-					
+
 				}
-				
+
 			}
 		} 
 		catch (FileNotFoundException e) {
@@ -184,7 +185,7 @@ public class Board {
 	}
 
 	public void loadLayoutConfig() throws BadConfigFormatException {
-		
+
 		// Save all the lines from the file to an arrayList
 		List<String[]> lines = new ArrayList<>();
 
@@ -211,12 +212,12 @@ public class Board {
 				throw new BadConfigFormatException("Inconsistent column count in layout file.");
 			}
 		}
-		
+
 		setUpBoard(lines);
 		deal();
 	}
-	
-	
+
+
 	// Sets up the full board, assigning proper cells the proper characteristics
 	private void setUpBoard(List<String[]> lines) throws BadConfigFormatException {
 
@@ -227,7 +228,7 @@ public class Board {
 		Set<Character> uniqueRooms = new HashSet<>();
 		doors = new HashSet<>();
 
-		
+
 		// Loop through the amount of rows and columns, checking to see if a cell has a certain characteristic
 		for (int r = 0; r < numRows; r++) {
 			for (int c = 0; c < numColumns; c++) {
@@ -357,7 +358,7 @@ public class Board {
 		if (row < 0 || row >= numRows || col < 0 || col >= numColumns) return;
 
 		BoardCell other = grid[row][col];
-		
+
 		// Handle walkways
 		if (other.isWalkway()) {
 			adj.add(other);
@@ -494,7 +495,7 @@ public class Board {
 			visited.remove(adjCell);
 		}
 	}
-	
+
 	public void deal() {
 		//Deals with the case of no cards being instantiated (in the case of the 306 tests to make them pass)
 		if (weaponCards.size() == 0) {
@@ -506,26 +507,26 @@ public class Board {
 		int answerRoomNum = rand.nextInt(roomCards.size());
 		int answerWeaponNum = rand.nextInt(weaponCards.size());
 		int answerPersonNum = rand.nextInt(personCards.size());
-		
+
 		Card answerRoom = roomCards.get(answerRoomNum);
 		Card answerWeapon = weaponCards.get(answerWeaponNum);
 		Card answerPerson = personCards.get(answerPersonNum);
-		
+
 		// Then takes those 3 cards and stores it the answer as a Solution
 		Solution answer = new Solution(answerRoom, answerWeapon, answerPerson);
-		
+
 		// Gets a callable answer so we can compare it to an accusation
 		theAnswer = answer.theAnswer();
-		
+
 		// Removes the cards that were picked from the dealable cards, leaving the total amount of cards intact
 		allDealableCards = new ArrayList<>(allCards);
-		
+
 		allDealableCards.remove(answerRoom);
 		allDealableCards.remove(answerPerson);
 		allDealableCards.remove(answerWeapon);
-		
+
 		int playerNum = 0;
-		
+
 		// Cycle through the cards, dealing them out to each player, and then removing it from the cards that can be dealable
 		while (!allDealableCards.isEmpty()) {
 			int thisCardNum = rand.nextInt(allDealableCards.size());			
@@ -536,10 +537,10 @@ public class Board {
 			if (playerNum >= players.size()) { playerNum = 0; }
 			allDealableCards.remove(thisCardNum);
 		}
-		
+
 	}
-	
-	
+
+
 	public boolean testAccusation(Card room, Card weapon, Card person) throws Exception {
 		// Handle the cases where the user inputs the wrong type for the cards
 		if (room.getCardType() != CardType.ROOM) {
@@ -551,14 +552,14 @@ public class Board {
 		if (person.getCardType() != CardType.PERSON) {
 			throw new Exception("Invalid Person Card");
 		}
-		
+
 		// Add the guess to an array list
 		List<Card> guess = new ArrayList<Card>();
-		
+
 		guess.add(room);
 		guess.add(weapon);
 		guess.add(person);
-		
+
 		// If the guess is equal to the answer, then return true, otherwise, return false
 		if (guess.equals(theAnswer)) {
 			return true;
@@ -567,8 +568,11 @@ public class Board {
 			return false;
 		}
 	}
-	
+
 	public Card makeSuggestion(Card room, Card weapon, Card person) throws Exception {
+		// Reset last disprover
+		lastDisprovingPlayer = null;
+
 		// Handle cases where the user inputs the wrong type for the cards
 		if (room.getCardType() != CardType.ROOM) {
 			throw new Exception("Invalid Room Card");
@@ -579,14 +583,14 @@ public class Board {
 		if (person.getCardType() != CardType.PERSON) {
 			throw new Exception("Invalid Person Card");
 		}
-		
+
 		// Add the suggestion to an array list
 		List<Card> suggestion = new ArrayList<Card>();
-		
+
 		suggestion.add(room);
 		suggestion.add(weapon);
 		suggestion.add(person);
-		
+
 		// Cycle through the players, on each player, try to disprove the suggestion, if the suggestion returns a card, return that card, otherwise, keep
 		// looping through the players until all the players are looped through, and if no cards are returned, return null
 		for (int i = 0; i < players.size(); i++) {
@@ -595,12 +599,13 @@ public class Board {
 			if (currentPlayerIndex != -1 && currentPlayerIndex == i) {
 				System.out.println("Skipping Player " + currentPlayer.getName());
 				continue;
-				}
+			}
 			System.out.println("Checking Player " + currentPlayer.getName());
 			Card disprove = currentPlayer.disproveSuggestion(suggestion);
-			
+
 			if (disprove != null) {
 				System.out.println("Found With Player " + currentPlayer.getName());
+				lastDisprovingPlayer = currentPlayer;
 				return disprove;
 			}
 		}
@@ -694,23 +699,21 @@ public class Board {
 	}
 	//Setter for theAnswer (used for tests)
 	public void setTheAnswer(List<Card> theAnswer) {
-	    this.theAnswer.clear();
-	    this.theAnswer.addAll(theAnswer);
+		this.theAnswer.clear();
+		this.theAnswer.addAll(theAnswer);
 	}
 	//Setter for the Players List (used for tests)
 	public void setPlayers(List<Player> players) {
-	    this.players.clear();
-	    this.players.addAll(players);
+		this.players.clear();
+		this.players.addAll(players);
 	}
-	
+
 	public void setCurrentPlayerIndex(int index) {
 		this.currentPlayerIndex = index;
 	}
 
-	
-	
-
-
-	
-	
+	// Return the player that disproved a suggestion
+	public Player getLastDisprovingPlayer() {
+		return lastDisprovingPlayer;
+	}
 }

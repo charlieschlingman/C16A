@@ -7,6 +7,8 @@ public class ComputerPlayer extends Player {
 
 	private Random rand = new Random();
 	private List<Card> seenCards;
+	private boolean readyToAccuse = false;
+	private Solution accusation = null;
 
 	// Constructor
 	public ComputerPlayer(String name, Color playerColor, String playerType, Integer row, Integer col) {
@@ -22,6 +24,23 @@ public class ComputerPlayer extends Player {
 	// Return seenCards
 	public List<Card> getSeenCards() {
 		return seenCards;
+	}
+
+	// Mark cpu as ready to make an accusation
+	public boolean isReadyToAccuse() {
+		return readyToAccuse; 
+	}
+	public void setReadyToAccuse(boolean x) { 
+		readyToAccuse = x; 
+	}
+
+	// Store and return cpu's accusation
+	public void setAccusation(Solution a) {
+		accusation = a; 
+	}
+
+	public Solution getAccusation() { 
+		return accusation; 
 	}
 
 	// Create suggestion based on current room and unseen cards

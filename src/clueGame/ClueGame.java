@@ -1,8 +1,6 @@
 package clueGame;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,7 +9,6 @@ import java.util.HashSet;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 public class ClueGame extends JFrame {
 
@@ -139,6 +136,27 @@ public class ClueGame extends JFrame {
 	}
 
 	private void computerTurn(ComputerPlayer cpu, int roll, Board theBoard) {
+		// If cpu is ready to accuse, do so first
+		if (cpu.isReadyToAccuse()) {
+			Solution a = cpu.getAccusation();
+
+			boolean correct = (theBoard.getTheAnswer().contains(a.getRoom()) && theBoard.getTheAnswer().contains(a.getPerson()) &&
+					theBoard.getTheAnswer().contains(a.getWeapon()));
+
+			// Update GUI
+			gamepanel.setGuess(a.getRoom().getCardName() + ", " + a.getWeapon().getCardName() + ", " +a.getPerson().getCardName());
+			gamepanel.setGuessResult(correct ? "CPU Accusation Correct!" : "CPU Accusation Incorrect!");
+
+			if (correct) { 
+				JOptionPane.showMessageDialog(null, cpu.getName() + " solved the case!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+				System.exit(0);
+			} 
+			else {
+				// CPU never guesses incorrectly, so do nothing
+			}
+			return;
+		}
+
 		// Calculate all possible targets
 		BoardCell start = theBoard.getCell(cpu.getRow(), cpu.getCol());
 		theBoard.calcTargets(start, roll);
@@ -186,21 +204,20 @@ public class ClueGame extends JFrame {
 				e.printStackTrace();
 			}
 
-			// Update GUI with the CPU's guess
+			// Update GUI with the cpu's guess
 			gamepanel.setGuess(suggestion.getRoom().getCardName() + ", " + suggestion.getWeapon().getCardName() + ", " +
-							suggestion.getPerson().getCardName());
+					suggestion.getPerson().getCardName());
 
 			if (disproved == null) {
+				// cpu is ready to accuse
 				gamepanel.setGuessResult("Suggestion Not Disproved");
 
-				// 6. COMPUTER MAY ACCUSE NEXT TURN
-				//cpu.setReadyToAccuse(true);
-				//cpu.setStoredSuggestion(suggestion);  // you must add this field
+				cpu.setReadyToAccuse(true);
+				cpu.setAccusation(suggestion);
 			}
 			else {
-				//gamepanel.setGuessResult("Suggestion Disproved by " + theBoard.getPlayers()
-				//.get(theBoard.getCurrentPlayerIndex()).getName());
-
+				Player disprover = theBoard.getLastDisprovingPlayer();
+				gamepanel.setGuessResult("Suggestion Disproved by " + disprover.getName());
 				// CPU learns from disproval
 				cpu.seeCard(disproved);
 			}
