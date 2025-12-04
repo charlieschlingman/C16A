@@ -1,7 +1,17 @@
-commit 4cb9c7fcb4bc94623eed707cd7b21ee822967daf
+commit 614107d9ade2882e382def26320ba8766976b74a
+Author: Gus Kennedy <gus_kennedy@mines.edu>
+Date:   Wed Nov 26 21:15:54 2025 -0700
+
+    Added computer player movement functionality
+
+commit 7d168911078008844b99d8d7932b4e4607d70372
+Author: Gus Kennedy <gus_kennedy@mines.edu>
+Date:   Wed Nov 26 20:49:28 2025 -0700
+
+    Implemented movement functionality for the human player
+
+commit cf80e3e779d09436ea399367c88f41308a08a084
 Author: charlie_schlingman <charlie_schlingman@mines.edu>
-Date:   Mon Nov 24 16:06:50 2025 -0700
+Date:   Tue Nov 25 23:54:59 2025 -0700
 
-    made it so room labels are properly centered and so that they move with the window size properly
-
-
+    Added the logic to update the board with a roll and display targets properly, as well as added the popup

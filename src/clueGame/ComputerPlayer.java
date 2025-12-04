@@ -74,7 +74,6 @@ public class ComputerPlayer extends Player {
 		}
 
 		if (!roomTargets.isEmpty()) {
-			System.out.println("Jerry: " + roomTargets.get(rand.nextInt(roomTargets.size())));
 			return roomTargets.get(rand.nextInt(roomTargets.size()));
 		}
 
