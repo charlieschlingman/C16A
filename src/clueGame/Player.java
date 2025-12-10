@@ -14,6 +14,8 @@ public class Player {
 	protected Integer row;
 	protected Integer col;
 	protected List<Card> myCards;
+	public boolean gotSuggested = false;
+	public boolean needsToMove = false;
 	
 	//Constructor
 	public Player(String name, Color playerColor, String playerType, Integer row, Integer col) {
@@ -92,6 +94,10 @@ public class Player {
 	    g.fillOval(x, y, cellSize, cellSize);
 	    g.setColor(Color.BLACK);
 	    g.drawOval(x, y, cellSize, cellSize);
+	}
+	
+	public void gotSuggested() {
+		this.gotSuggested = true;
 	}
 	
 	

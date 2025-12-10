@@ -22,6 +22,11 @@ public class ClueGame extends JFrame {
 	private static ClueGame instance;
 	private static boolean hasMoved = false;
 	private static accusationWindow accusationFinal;
+	private static List<Player> players;
+	
+	public List<Player> getPlayers() {
+		return players;
+	}
 
 	public static ClueGame getInstance() { 
 		return instance; 
@@ -161,6 +166,15 @@ public class ClueGame extends JFrame {
 		BoardCell start = theBoard.getCell(cpu.getRow(), cpu.getCol());
 		theBoard.calcTargets(start, roll);
 		Set<BoardCell> targets = theBoard.getTargets();
+		System.out.println(cpu.getName() + "'s suggestion status: " + cpu.gotSuggested);
+		if (cpu.gotSuggested) {
+			targets.add(start);
+			cpu.gotSuggested = false;
+		}
+		
+		for (BoardCell target: targets) {
+			System.out.println(target);
+		}
 
 		if (targets.isEmpty()) {
 			System.out.println(cpu.getName() + " cannot move.");
@@ -207,6 +221,15 @@ public class ClueGame extends JFrame {
 			// Update GUI with the cpu's guess
 			gamepanel.setGuess(suggestion.getRoom().getCardName() + ", " + suggestion.getWeapon().getCardName() + ", " +
 					suggestion.getPerson().getCardName());
+			
+			for (Player player: players) {
+				if (player.getName().equals(suggestion.getPerson().getCardName())) {
+					System.out.println("Found suggested player: " + player.getName());
+					player.gotSuggested();
+					player.setLocation(cpu.getRow(), cpu.getCol());
+					game.board.repaint();
+				}
+			}
 
 			if (disproved == null) {
 				// cpu is ready to accuse
@@ -236,7 +259,7 @@ public class ClueGame extends JFrame {
 		// Set the roll, the player lists, and the human player
 		Random rand = new Random();
 		Integer roll;
-		List<Player> players = theBoard.getPlayers();
+		players = theBoard.getPlayers();
 		Player humanPlayer = players.get(0);
 
 		//Set the targets
@@ -266,6 +289,10 @@ public class ClueGame extends JFrame {
 					BoardCell currentCell = theBoard.getCell(humanPlayer.getRow(), humanPlayer.getCol());
 					theBoard.calcTargets(currentCell, roll);
 					targets = theBoard.getTargets();
+					if (humanPlayer.gotSuggested) {
+						targets.add(currentCell);
+						humanPlayer.gotSuggested = false;
+					}
 					game.board.setTargets(targets);
 
 					// Wait here until they click a valid target
@@ -329,6 +356,19 @@ public class ClueGame extends JFrame {
 						if (suggestion.weaponSuggestion != null) {
 							// Set the current player index of the board to the current players index, so they get skipped when checking the other players cards
 							theBoard.setCurrentPlayerIndex(game.getTurn());
+							Card suggestedPlayerCard = suggestion.playerSuggestion;
+							for (Player player: players) {
+								if (player.getName().equals(suggestedPlayerCard.getCardName())) {
+									System.out.println("Found Suggested Player: " + player.getName());
+									player.gotSuggested();
+
+									System.out.println(player.getName() + "'s Suggested Status: " + player.gotSuggested);
+									Player currentPlayerThatSuggested = players.get(game.getTurn());
+									player.setLocation(currentPlayerThatSuggested.getRow(), currentPlayerThatSuggested.getCol());
+									System.out.println(player.getName() + "'s location set to: " + player.getRow() + ", " + player.getCol());
+									game.board.repaint();
+								}
+							}
 							// Set the result of the suggestion
 							Card suggestionResult = theBoard.makeSuggestion(suggestion.roomSuggestion, suggestion.weaponSuggestion, suggestion.playerSuggestion);
 							game.gamepanel.setGuess(suggestion.roomSuggestion.getCardName() + ", " + suggestion.weaponSuggestion.getCardName() + ", " + suggestion.playerSuggestion.getCardName());
@@ -340,6 +380,8 @@ public class ClueGame extends JFrame {
 								game.gamepanel.setGuessResult(suggestionResult.getCardName());
 								game.cardpanel.addSeenCard(suggestionResult);
 							}
+							
+							
 						}
 
 					}
