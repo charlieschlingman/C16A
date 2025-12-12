@@ -235,8 +235,44 @@ public class ClueGame extends JFrame {
 				// cpu is ready to accuse
 				gamepanel.setGuessResult("Suggestion Not Disproved");
 
-				cpu.setReadyToAccuse(true);
-				cpu.setAccusation(suggestion);
+				// Only accuse if the cpu has narrowed it to 3 unknown cards
+			    List<Card> allCards = theBoard.getAllCards(); 
+			    List<Card> seen = cpu.getSeenCards();
+			    List<Card> cpuCards = cpu.getMyCards();
+
+			    List<Card> unseen = new ArrayList<>();
+			    for (Card c : allCards) {
+			        // Unknown if not seen or in hand
+			        if (!cpuCards.contains(c) && !seen.contains(c)) {
+			            unseen.add(c);
+			        }
+			    }
+
+			    // If there are exactly 3 unseen cards, they must be the solution
+			    if (unseen.size() == 3) {
+			        Card roomCard = null;
+			        Card personCard = null;
+			        Card weaponCard = null;
+
+			        for (Card c : unseen) {
+			            if (c.getCardType() == CardType.ROOM) {
+			                roomCard = c;
+			            } 
+			            else if (c.getCardType() == CardType.PERSON) {
+			                personCard = c;
+			            } 
+			            else if (c.getCardType() == CardType.WEAPON) {
+			                weaponCard = c;
+			            }
+			        }
+
+			        // Only if one of each type, then set accusation
+			        if (roomCard != null && personCard != null && weaponCard != null) {
+			            Solution acc = new Solution(roomCard, weaponCard, personCard);
+			            cpu.setAccusation(acc);
+			            cpu.setReadyToAccuse(true);
+			        }
+			    }
 			}
 			else {
 				Player disprover = theBoard.getLastDisprovingPlayer();
@@ -471,9 +507,5 @@ public class ClueGame extends JFrame {
 			JOptionPane.showMessageDialog(null, "Sorry, that wasn't the right guess. You Lose!", "Final Result", JOptionPane.INFORMATION_MESSAGE);
 			game.dispose();
 		}
-
-
-
-
 	}	
 }

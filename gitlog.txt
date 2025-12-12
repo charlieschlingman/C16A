@@ -1,17 +1,17 @@
-commit 614107d9ade2882e382def26320ba8766976b74a
+commit 15f745088cfe29a2985b872b8691d1ae1034bc3b
 Author: Gus Kennedy <gus_kennedy@mines.edu>
-Date:   Wed Nov 26 21:15:54 2025 -0700
+Date:   Wed Dec 3 23:05:23 2025 -0700
 
-    Added computer player movement functionality
+    Added cpu accusation functionality
 
-commit 7d168911078008844b99d8d7932b4e4607d70372
+commit 8c98baf9e81b499c82bf310ce9c9ada51132c4a4
 Author: Gus Kennedy <gus_kennedy@mines.edu>
-Date:   Wed Nov 26 20:49:28 2025 -0700
+Date:   Wed Dec 3 22:21:58 2025 -0700
 
-    Implemented movement functionality for the human player
+    Added cpu suggestion functionality
 
-commit cf80e3e779d09436ea399367c88f41308a08a084
+commit bfa51e5733fc68ec9fe7f59fb4f6df93f6787494
 Author: charlie_schlingman <charlie_schlingman@mines.edu>
-Date:   Tue Nov 25 23:54:59 2025 -0700
+Date:   Wed Dec 3 20:17:14 2025 -0700
 
-    Added the logic to update the board with a roll and display targets properly, as well as added the popup
+    added all human player logic
